@@ -1,3 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +12,7 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
-    <title>One Music - Modern Music HTML5 Template</title>
+    <title>One Music - All Songs</title>
 
     <!-- Favicon -->
     <link rel="icon" href="img/core-img/favicon.ico">
@@ -64,7 +67,7 @@
                                         <ul class="dropdown">
                                             <li><a href="index.jsp">Home</a></li>
                                             <li><a href="albums-store.jsp">Albums</a></li>
-                                            <li><a href="event.jsp">Events</a></li>
+                                            <li><a href="allSongs.jsp">Events</a></li>
                                             <li><a href="blog.jsp">News</a></li>
                                             <li><a href="contact.jsp">Contact</a></li>
                                             <li><a href="elements.jsp">Elements</a></li>
@@ -88,7 +91,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li><a href="event.jsp">Events</a></li>
+                                    <li><a href="allSongs.jsp">All Songs</a></li>
                                     <li><a href="blog.jsp">News</a></li>
                                     <li><a href="contact.jsp">Contact</a></li>
                                 </ul>
@@ -120,7 +123,7 @@
     <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
         <div class="bradcumbContent">
             <p>See what’s new</p>
-            <h2>Events</h2>
+            <h2>All Songs</h2>
         </div>
     </section>
     <!-- ##### Breadcumb Area End ##### -->
@@ -129,169 +132,53 @@
     <section class="events-area section-padding-100">
         <div class="container">
             <div class="row">
-
-                <!-- Single Event Area -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="single-event-area mb-30">
-                        <div class="event-thumbnail">
-                            <img src="img/bg-img/e1.jpg" alt="">
-                        </div>
-                        <div class="event-text">
-                            <h4>Dj Night Party</h4>
-                            <div class="event-meta-data">
-                                <a href="#" class="event-place">VIP Sala</a>
-                                <a href="#" class="event-date">June 15, 2018</a>
+                <c:forEach items='${requestScope["listSongs"]}' var="song">
+                    <div class="col-12">
+                        <div class="single-song-area mb-30 d-flex flex-wrap align-items-end">
+                            <div class="song-thumbnail">
+                                <img src="${song.simg}" alt="">
                             </div>
-                            <a href="#" class="btn see-more-btn">See Event</a>
+                            <div class="song-play-area">
+                                <div class="song-name">
+                                    <p>${song.sid}. ${song.sname}</p>
+                                </div>
+                                <audio preload="auto" controls>
+                                    <source src="${song.slink}">
+                                </audio>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </c:forEach>
 
-                <!-- Single Event Area -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="single-event-area mb-30">
-                        <div class="event-thumbnail">
-                            <img src="img/bg-img/e2.jpg" alt="">
-                        </div>
-                        <div class="event-text">
-                            <h4>The Mission</h4>
-                            <div class="event-meta-data">
-                                <a href="#" class="event-place">Gold Arena</a>
-                                <a href="#" class="event-date">June 15, 2018</a>
-                            </div>
-                            <a href="#" class="btn see-more-btn">See Event</a>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Single Event Area -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="single-event-area mb-30">
-                        <div class="event-thumbnail">
-                            <img src="img/bg-img/e3.jpg" alt="">
-                        </div>
-                        <div class="event-text">
-                            <h4>Planet ibiza</h4>
-                            <div class="event-meta-data">
-                                <a href="#" class="event-place">Space Ibiza</a>
-                                <a href="#" class="event-date">June 15, 2018</a>
-                            </div>
-                            <a href="#" class="btn see-more-btn">See Event</a>
-                        </div>
-                    </div>
-                </div>
+<%--                <!-- Single Event Area -->--%>
+<%--                <div class="col-12 col-md-6 col-lg-4">--%>
+<%--                    <div class="single-event-area mb-30">--%>
+<%--                        <div class="event-thumbnail">--%>
+<%--                            <img src="img/bg-img/e1.jpg" alt="">--%>
+<%--                        </div>--%>
+<%--                        <div class="event-text">--%>
+<%--                            <h4>Dj Night Party</h4>--%>
+<%--                            <div class="event-meta-data">--%>
+<%--                                <a href="#" class="event-place">VIP Sala</a>--%>
+<%--                                <a href="#" class="event-date">June 15, 2018</a>--%>
+<%--                            </div>--%>
+<%--                            <a href="#" class="btn see-more-btn">See Event</a>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
 
-                <!-- Single Event Area -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="single-event-area mb-30">
-                        <div class="event-thumbnail">
-                            <img src="img/bg-img/e4.jpg" alt="">
-                        </div>
-                        <div class="event-text">
-                            <h4>Dj Night Party</h4>
-                            <div class="event-meta-data">
-                                <a href="#" class="event-place">VIP Sala</a>
-                                <a href="#" class="event-date">June 15, 2018</a>
-                            </div>
-                            <a href="#" class="btn see-more-btn">See Event</a>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Single Event Area -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="single-event-area mb-30">
-                        <div class="event-thumbnail">
-                            <img src="img/bg-img/e5.jpg" alt="">
-                        </div>
-                        <div class="event-text">
-                            <h4>The Mission</h4>
-                            <div class="event-meta-data">
-                                <a href="#" class="event-place">Gold Arena</a>
-                                <a href="#" class="event-date">June 15, 2018</a>
-                            </div>
-                            <a href="#" class="btn see-more-btn">See Event</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Single Event Area -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="single-event-area mb-30">
-                        <div class="event-thumbnail">
-                            <img src="img/bg-img/e6.jpg" alt="">
-                        </div>
-                        <div class="event-text">
-                            <h4>Planet ibiza</h4>
-                            <div class="event-meta-data">
-                                <a href="#" class="event-place">Space Ibiza</a>
-                                <a href="#" class="event-date">June 15, 2018</a>
-                            </div>
-                            <a href="#" class="btn see-more-btn">See Event</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Single Event Area -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="single-event-area mb-30">
-                        <div class="event-thumbnail">
-                            <img src="img/bg-img/e7.jpg" alt="">
-                        </div>
-                        <div class="event-text">
-                            <h4>Dj Night Party</h4>
-                            <div class="event-meta-data">
-                                <a href="#" class="event-place">VIP Sala</a>
-                                <a href="#" class="event-date">June 15, 2018</a>
-                            </div>
-                            <a href="#" class="btn see-more-btn">See Event</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Single Event Area -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="single-event-area mb-30">
-                        <div class="event-thumbnail">
-                            <img src="img/bg-img/e8.jpg" alt="">
-                        </div>
-                        <div class="event-text">
-                            <h4>The Mission</h4>
-                            <div class="event-meta-data">
-                                <a href="#" class="event-place">Gold Arena</a>
-                                <a href="#" class="event-date">June 15, 2018</a>
-                            </div>
-                            <a href="#" class="btn see-more-btn">See Event</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Single Event Area -->
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="single-event-area mb-30">
-                        <div class="event-thumbnail">
-                            <img src="img/bg-img/e9.jpg" alt="">
-                        </div>
-                        <div class="event-text">
-                            <h4>Planet ibiza</h4>
-                            <div class="event-meta-data">
-                                <a href="#" class="event-place">Space Ibiza</a>
-                                <a href="#" class="event-date">June 15, 2018</a>
-                            </div>
-                            <a href="#" class="btn see-more-btn">See Event</a>
-                        </div>
-                    </div>
-                </div>
 
             </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="load-more-btn text-center mt-70">
-                        <a href="#" class="btn oneMusic-btn">Load More <i class="fa fa-angle-double-right"></i></a>
-                    </div>
-                </div>
-            </div>
+<%--            <div class="row">--%>
+<%--                <div class="col-12">--%>
+<%--                    <div class="load-more-btn text-center mt-70">--%>
+<%--                        <a href="#" class="btn oneMusic-btn">Load More <i class="fa fa-angle-double-right"></i></a>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
         </div>
     </section>
     <!-- ##### Events Area End ##### -->
@@ -413,7 +300,7 @@
                     <a href="#"><img src="img/core-img/logo.png" alt=""></a>
                     <p class="copywrite-text"><a href="#"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></a></p>
                 </div>
 
                 <div class="col-12 col-md-6">

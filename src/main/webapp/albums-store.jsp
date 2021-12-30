@@ -1,3 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,7 +67,7 @@
                                         <ul class="dropdown">
                                             <li><a href="index.jsp">Home</a></li>
                                             <li><a href="albums-store.jsp">Albums</a></li>
-                                            <li><a href="event.jsp">Events</a></li>
+                                            <li><a href="allSongs.jsp">Events</a></li>
                                             <li><a href="blog.jsp">News</a></li>
                                             <li><a href="contact.jsp">Contact</a></li>
                                             <li><a href="elements.jsp">Elements</a></li>
@@ -88,7 +91,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li><a href="event.jsp">Events</a></li>
+                                    <li><a href="allSongs.jsp">Events</a></li>
                                     <li><a href="blog.jsp">News</a></li>
                                     <li><a href="contact.jsp">Contact</a></li>
                                 </ul>
