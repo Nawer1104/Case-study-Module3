@@ -2,6 +2,7 @@ package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
 import One_Music_Project.Model.Song;
+import One_Music_Project.Model.UserAccount;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -19,13 +20,33 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Song> list = projectDao.selectAllSong();
-        request.setAttribute("listSongs", list);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/allSongs.jsp");
-        try {
-            dispatcher.forward(request, response);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
+        request.setCharacterEncoding("UTF-8");
+
+        String userAccount = request.getParameter("userAccount");
+        String userPassword = request.getParameter("userPassword");
+
+        UserAccount account = projectDao.login(userAccount, userPassword);
+
+        if (userAccount.equals("") || userPassword.equals("")) {
+            request.setAttribute("mess", "Can't be empty!");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+            try {
+                dispatcher.forward(request, response);
+            } catch (ServletException | IOException e) {
+                e.printStackTrace();
+            }
+        } else if (account == null) {
+            request.setAttribute("mess", "Wrong password or email address.");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+            try {
+                dispatcher.forward(request, response);
+            } catch (ServletException | IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            HttpSession session = request.getSession();
+            session.setAttribute("acc", account);
+            response.sendRedirect("/index.jsp");
         }
     }
 }

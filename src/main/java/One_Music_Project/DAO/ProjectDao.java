@@ -2,6 +2,7 @@ package One_Music_Project.DAO;
 
 import One_Music_Project.Model.Artist;
 import One_Music_Project.Model.Song;
+import One_Music_Project.Model.UserAccount;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,7 +18,12 @@ public class ProjectDao {
     private static final String SEARCH_ARTIST_BY_CHAR = "SELECT * FROM one_music_project.artist WHERE aname like ?;";
     private static final String SEARCH_SONG_BY_AID = "SELECT * FROM one_music_project.song where aid = ?;";
     private static final String GET_ARTIST_BY_AID = "SELECT * FROM one_music_project.artist WHERE aid = ?;";
-
+    private static final String SELECT_USER_BY_ACCOUNT_AND_PASSWORD = "SELECT * FROM one_music_project.useraccount where uaccount = ? and upassword = ?";
+    private static final String CHECK_ACCOUNT_EXIST = "SELECT * FROM one_music_project.useraccount where uaccount = ?;";
+    private static final String CREATE_NEW_ACCOUNT = "INSERT INTO `one_music_project`.`useraccount` (`uname`, `uaccount`, `upassword`) VALUES (?, ?, ?);";
+    private static final String GET_USER = "SELECT * FROM one_music_project.useraccount where uid = ?;";
+    private static final String EDIT_USER_FREE = "UPDATE `one_music_project`.`useraccount` SET `uname` = ?, `upassword` = ?, `uimg` = ? WHERE (`uid` = ?);";
+    private static final String UPDATE_PREMIUM = "UPDATE `one_music_project`.`useraccount` SET `uname` = ?, `upassword` = ?, `uimg` = ?, `ispremium` = 1 WHERE (`uid` = ?);";
 
     public ProjectDao() {
     }
@@ -130,6 +136,114 @@ public class ProjectDao {
             printSQLException(e);
         }
         return null;
+    }
+
+    public UserAccount login(String userAccount, String userPassword) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( SELECT_USER_BY_ACCOUNT_AND_PASSWORD );) {
+            preparedStatement.setString(1, userAccount);
+            preparedStatement.setString(2, userPassword);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("uid");
+                String name = rs.getString("uname");
+                String account = rs.getString("uaccount");
+                String password = rs.getString("upassword");
+                String img = rs.getString("uimg");
+                double balance = rs.getDouble("ubalance");
+                int isPremium = rs.getInt("ispremium");
+                int isUser = rs.getInt("isuser");
+                int isAdmin = rs.getInt("isadmin");
+                return new UserAccount(id, name, account, password, img, balance, isPremium, isUser, isAdmin);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return null;
+    }
+
+    public UserAccount checkUserExist(String userName) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(CHECK_ACCOUNT_EXIST);) {
+            preparedStatement.setString(1, userName);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("uid");
+                String name = rs.getString("uname");
+                String account = rs.getString("uaccount");
+                String password = rs.getString("upassword");
+                String img = rs.getString("uimg");
+                double balance = rs.getDouble("ubalance");
+                int isPremium = rs.getInt("ispremium");
+                int isUser = rs.getInt("isuser");
+                int isAdmin = rs.getInt("isadmin");
+                return new UserAccount(id, name, account, password, img, balance, isPremium, isUser, isAdmin);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return null;
+    }
+
+    public void createNewAccount(String userName, String userAccount, String userPassword) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( CREATE_NEW_ACCOUNT );) {
+            preparedStatement.setString(1, userName);
+            preparedStatement.setString(2, userAccount);
+            preparedStatement.setString(3, userPassword);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public UserAccount getUserAccount(String uid) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( GET_USER );) {
+            preparedStatement.setString(1, uid);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("uid");
+                String name = rs.getString("uname");
+                String account = rs.getString("uaccount");
+                String password = rs.getString("upassword");
+                String img = rs.getString("uimg");
+                double balance = rs.getDouble("ubalance");
+                int isPremium = rs.getInt("ispremium");
+                int isUser = rs.getInt("isuser");
+                int isAdmin = rs.getInt("isadmin");
+                return new UserAccount(id, name, account, password, img, balance, isPremium, isUser, isAdmin);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return null;
+    }
+
+    public void editUser(String name, String pass, String image, String id) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( EDIT_USER_FREE );) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, pass);
+            preparedStatement.setString(3, image);
+            preparedStatement.setString(4, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public void updatePrimeum(String name, String pass, String image, String id) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( UPDATE_PREMIUM );) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, pass);
+            preparedStatement.setString(3, image);
+            preparedStatement.setString(4, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
     }
 
     public static void main(String[] args) {

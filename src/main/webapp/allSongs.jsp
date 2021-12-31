@@ -99,14 +99,27 @@
                                 <!-- Login/Register & Cart Button -->
                                 <div class="login-register-cart-button d-flex align-items-center">
                                     <!-- Login/Register -->
-                                    <div class="login-register-btn mr-50">
-                                        <a href="login.jsp" id="loginBtn">Login / Register</a>
-                                    </div>
+                                    <c:if test="${sessionScope.acc == null}">
+                                        <div class="login-register-btn mr-50">
+                                            <a href="login.jsp" id="loginBtn">Login </a>
+                                        </div>
 
-                                    <!-- Cart Button -->
-                                    <div class="cart-btn">
-                                        <p><span class="icon-shopping-cart"></span> <span class="quantity">1</span></p>
-                                    </div>
+                                        <div class="login-register-btn mr-50">
+                                            <a href="registration.jsp" id="registerBtn"> Register</a>
+                                        </div>
+                                    </c:if>
+
+                                    <c:if test="${sessionScope.acc != null}">
+                                        <div class="header__navbar-item header__navbar-user">
+                                            <img src="${sessionScope.acc.uimg}" alt="" class="header__navbar-user-img">
+                                            <div class="login-register-btn mr-50">
+                                                <a href="/info?userAcc=${sessionScope.acc.uid}">${sessionScope.acc.uname}</a>
+                                            </div>
+                                            <div class="login-register-btn mr-50">
+                                                <a href="/logout">Log Out</a>
+                                            </div>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
                             <!-- Nav End -->
@@ -132,7 +145,7 @@
     <section class="events-area section-padding-100">
         <div class="container">
             <div class="row">
-                <c:forEach items='${requestScope["listSongs"]}' var="song">
+                <c:forEach items='${requestScope["listSongs"]}' var="song" begin="0" varStatus="loop">
                     <div class="col-12">
                         <div class="single-song-area mb-30 d-flex flex-wrap align-items-end">
                             <div class="song-thumbnail">
@@ -140,7 +153,7 @@
                             </div>
                             <div class="song-play-area">
                                 <div class="song-name">
-                                    <p>${song.sid}. ${song.sname}</p>
+                                    <p>${loop.count}. ${song.sname}</p>
                                 </div>
                                 <audio preload="auto" controls>
                                     <source src="${song.slink}">
