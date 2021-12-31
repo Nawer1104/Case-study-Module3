@@ -12,7 +12,7 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
-    <title>One Music - All Songs</title>
+    <title>One Music - Modern Music HTML5 Template</title>
 
     <!-- Favicon -->
     <link rel="icon" href="img/core-img/favicon.ico">
@@ -123,15 +123,190 @@
     <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
         <div class="bradcumbContent">
             <p>See what’s new</p>
-            <h2>All Songs</h2>
+            <h2>All Artists</h2>
         </div>
     </section>
     <!-- ##### Breadcumb Area End ##### -->
 
-    <!-- ##### Events Area Start ##### -->
-    <section class="events-area section-padding-100">
+    <!-- ##### Album Catagory Area Start ##### -->
+    <section class="album-catagory section-padding-100-0">
         <div class="container">
             <div class="row">
+                <div class="col-12">
+                    <div class="browse-by-catagories catagory-menu d-flex flex-wrap align-items-center mb-70">
+                        <a href="/allArtist" data-filter="*">Browse All</a>
+                        <a href="/searchArtist?name=a" data-filter=".a" class="${likeName.equals("a") ?"active" : ""}">A</a>
+                        <a href="/searchArtist?name=b" data-filter=".b" class="${likeName.equals("b") ?"active" : ""}">B</a>
+                        <a href="/searchArtist?name=c" data-filter=".c" class="${likeName.equals("c") ?"active" : ""}">C</a>
+                        <a href="/searchArtist?name=d" data-filter=".d" class="${likeName.equals("d") ?"active" : ""}">D</a>
+                        <a href="/searchArtist?name=e" data-filter=".e" class="${likeName.equals("e") ?"active" : ""}">E</a>
+                        <a href="/searchArtist?name=f" data-filter=".f" class="${likeName.equals("f") ?"active" : ""}">F</a>
+                        <a href="/searchArtist?name=g" data-filter=".g" class="${likeName.equals("g") ?"active" : ""}">G</a>
+                        <a href="/searchArtist?name=h" data-filter=".h" class="${likeName.equals("h") ?"active" : ""}">H</a>
+                        <a href="/searchArtist?name=i" data-filter=".i" class="${likeName.equals("i") ?"active" : ""}">I</a>
+                        <a href="/searchArtist?name=j" data-filter=".j" class="${likeName.equals("j") ?"active" : ""}">J</a>
+                        <a href="/searchArtist?name=k" data-filter=".k" class="${likeName.equals("k") ?"active" : ""}">K</a>
+                        <a href="/searchArtist?name=l" data-filter=".l" class="${likeName.equals("l") ?"active" : ""}">L</a>
+                        <a href="/searchArtist?name=m" data-filter=".m" class="${likeName.equals("m") ?"active" : ""}">M</a>
+                        <a href="/searchArtist?name=n" data-filter=".n" class="${likeName.equals("n") ?"active" : ""}">N</a>
+                        <a href="/searchArtist?name=o" data-filter=".o" class="${likeName.equals("o") ?"active" : ""}">O</a>
+                        <a href="/searchArtist?name=p" data-filter=".p" class="${likeName.equals("p") ?"active" : ""}">P</a>
+                        <a href="/searchArtist?name=q" data-filter=".q" class="${likeName.equals("q") ?"active" : ""}">Q</a>
+                        <a href="/searchArtist?name=r" data-filter=".r" class="${likeName.equals("r") ?"active" : ""}">R</a>
+                        <a href="/searchArtist?name=s" data-filter=".s" class="${likeName.equals("s") ?"active" : ""}">S</a>
+                        <a href="/searchArtist?name=t" data-filter=".t" class="${likeName.equals("t") ?"active" : ""}">T</a>
+                        <a href="/searchArtist?name=u" data-filter=".u" class="${likeName.equals("u") ?"active" : ""}">U</a>
+                        <a href="/searchArtist?name=v" data-filter=".v" class="${likeName.equals("v") ?"active" : ""}">V</a>
+                        <a href="/searchArtist?name=w" data-filter=".w" class="${likeName.equals("w") ?"active" : ""}">W</a>
+                        <a href="/searchArtist?name=x" data-filter=".x" class="${likeName.equals("x") ?"active" : ""}">X</a>
+                        <a href="/searchArtist?name=y" data-filter=".y" class="${likeName.equals("y") ?"active" : ""}">Y</a>
+                        <a href="/searchArtist?name=z" data-filter=".z" class="${likeName.equals("z") ?"active" : ""}">Z</a>
+                    </div>
+                </div>
+            </div>
+<%--            oneMusic-albums--%>
+            <div class="row" style="position: relative">
+
+                <!-- Single Album -->
+                <c:forEach items='${requestScope["listArtists"]}' var="artist">
+                    <div class="col-12 col-sm-4 col-md-3 col-lg-2 single-album-item">
+                        <div class="single-album">
+                            <img src="${artist.apic}" alt="">
+                            <div class="album-info">
+                                <a href="/songOfArtist?aid=${artist.aid}">
+                                    <h5>${artist.aname}</h5>
+                                </a>
+                                <p>${artist.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+
+                <c:if test="${requestScope.Artist != null}">
+                    <div class="col-12 col-sm-4 col-md-3 col-lg-2 single-album-item">
+                        <div class="single-album">
+                            <img src="${Artist.apic}" alt="">
+                            <div class="album-info">
+                                <a href="/songOfArtist?aid=${Artist.aid}">
+                                    <h5>${Artist.aname}</h5>
+                                </a>
+                                <p>${Artist.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+
+            </div>
+        </div>
+    </section>
+    <!-- ##### Album Catagory Area End ##### -->
+
+    <!-- ##### Buy Now Area Start ##### -->
+<%--    <div class="oneMusic-buy-now-area mb-100">--%>
+<%--        <div class="container">--%>
+<%--            <div class="row">--%>
+
+<%--                <!-- Single Album Area -->--%>
+<%--                <div class="col-12 col-sm-6 col-md-3">--%>
+<%--                    <div class="single-album-area">--%>
+<%--                        <div class="album-thumb">--%>
+<%--                            <img src="img/bg-img/b1.jpg" alt="">--%>
+<%--                            <!-- Album Price -->--%>
+<%--                            <div class="album-price">--%>
+<%--                                <p>$0.90</p>--%>
+<%--                            </div>--%>
+<%--                            <!-- Play Icon -->--%>
+<%--                            <div class="play-icon">--%>
+<%--                                <a href="#" class="video--play--btn"><span class="icon-play-button"></span></a>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                        <div class="album-info">--%>
+<%--                            <a href="#">--%>
+<%--                                <h5>Garage Band</h5>--%>
+<%--                            </a>--%>
+<%--                            <p>Radio Station</p>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+
+<%--                <!-- Single Album Area -->--%>
+<%--                <div class="col-12 col-sm-6 col-md-3">--%>
+<%--                    <div class="single-album-area">--%>
+<%--                        <div class="album-thumb">--%>
+<%--                            <img src="img/bg-img/b2.jpg" alt="">--%>
+<%--                        </div>--%>
+<%--                        <div class="album-info">--%>
+<%--                            <a href="#">--%>
+<%--                                <h5>Noises</h5>--%>
+<%--                            </a>--%>
+<%--                            <p>Buble Gum</p>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+
+<%--                <!-- Single Album Area -->--%>
+<%--                <div class="col-12 col-sm-6 col-md-3">--%>
+<%--                    <div class="single-album-area">--%>
+<%--                        <div class="album-thumb">--%>
+<%--                            <img src="img/bg-img/b3.jpg" alt="">--%>
+<%--                        </div>--%>
+<%--                        <div class="album-info">--%>
+<%--                            <a href="#">--%>
+<%--                                <h5>Jess Parker</h5>--%>
+<%--                            </a>--%>
+<%--                            <p>The Album</p>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+
+<%--                <!-- Single Album Area -->--%>
+<%--                <div class="col-12 col-sm-6 col-md-3">--%>
+<%--                    <div class="single-album-area">--%>
+<%--                        <div class="album-thumb">--%>
+<%--                            <img src="img/bg-img/b4.jpg" alt="">--%>
+<%--                        </div>--%>
+<%--                        <div class="album-info">--%>
+<%--                            <a href="#">--%>
+<%--                                <h5>Noises</h5>--%>
+<%--                            </a>--%>
+<%--                            <p>Buble Gum</p>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+
+<%--            </div>--%>
+
+<%--            <div class="row">--%>
+<%--                <div class="col-12">--%>
+<%--                    <div class="load-more-btn text-center">--%>
+<%--                        <a href="#" class="btn oneMusic-btn">Load More <i class="fa fa-angle-double-right"></i></a>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+    <!-- ##### Buy Now Area End ##### -->
+
+    <!-- ##### Add Area Start ##### -->
+    <div class="add-area mb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="adds">
+                        <a href="#"><img src="img/bg-img/add3.gif" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Add Area End ##### -->
+
+    <!-- ##### Song Area Start ##### -->
+    <div class="one-music-songs-area mb-70">
+        <div class="container">
+            <div class="row">
+
+                <!-- Single Song Area -->
                 <c:forEach items='${requestScope["listSongs"]}' var="song">
                     <div class="col-12">
                         <div class="single-song-area mb-30 d-flex flex-wrap align-items-end">
@@ -150,97 +325,10 @@
                     </div>
                 </c:forEach>
 
-
-<%--                <!-- Single Event Area -->--%>
-<%--                <div class="col-12 col-md-6 col-lg-4">--%>
-<%--                    <div class="single-event-area mb-30">--%>
-<%--                        <div class="event-thumbnail">--%>
-<%--                            <img src="img/bg-img/e1.jpg" alt="">--%>
-<%--                        </div>--%>
-<%--                        <div class="event-text">--%>
-<%--                            <h4>Dj Night Party</h4>--%>
-<%--                            <div class="event-meta-data">--%>
-<%--                                <a href="#" class="event-place">VIP Sala</a>--%>
-<%--                                <a href="#" class="event-date">June 15, 2018</a>--%>
-<%--                            </div>--%>
-<%--                            <a href="#" class="btn see-more-btn">See Event</a>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-
-
-
-            </div>
-
-<%--            <div class="row">--%>
-<%--                <div class="col-12">--%>
-<%--                    <div class="load-more-btn text-center mt-70">--%>
-<%--                        <a href="#" class="btn oneMusic-btn">Load More <i class="fa fa-angle-double-right"></i></a>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-        </div>
-    </section>
-    <!-- ##### Events Area End ##### -->
-
-    <!-- ##### Newsletter & Testimonials Area Start ##### -->
-    <section class="newsletter-testimonials-area">
-        <div class="container">
-            <div class="row">
-
-                <!-- Newsletter Area -->
-                <div class="col-12 col-lg-6">
-                    <div class="newsletter-area mb-100">
-                        <div class="section-heading text-left mb-50">
-                            <p>See what’s new</p>
-                            <h2>Subscribe to newsletter</h2>
-                        </div>
-                        <div class="newsletter-form">
-                            <form action="#">
-                                <input type="search" name="search" id="newsletterSearch" placeholder="E-mail">
-                                <button type="submit" class="btn oneMusic-btn">Subscribe <i class="fa fa-angle-double-right"></i></button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Testimonials Area -->
-                <div class="col-12 col-lg-6">
-                    <div class="testimonials-area mb-100 bg-img bg-overlay" style="background-image: url(img/bg-img/bg-3.jpg);">
-                        <div class="section-heading white text-left mb-50">
-                            <p>See what’s new</p>
-                            <h2>Testimonial</h2>
-                        </div>
-                        <!-- Testimonial Slide -->
-                        <div class="testimonials-slide owl-carousel">
-                            <!-- Single Slide -->
-                            <div class="single-slide">
-                                <p>Nam tristique ex vel magna tincidunt, ut porta nisl finibus. Vivamus eu dolor eu quam varius rutrum. Fusce nec justo id sem aliquam fringilla nec non lacus. Suspendisse eget lobortis nisi, ac cursus odio. Vivamus nibh velit, rutrum.</p>
-                                <div class="testimonial-info d-flex align-items-center">
-                                    <div class="testimonial-thumb">
-                                        <img src="img/bg-img/t1.jpg" alt="">
-                                    </div>
-                                    <p>William Smith, Customer</p>
-                                </div>
-                            </div>
-                            <!-- Single Slide -->
-                            <div class="single-slide">
-                                <p>Nam tristique ex vel magna tincidunt, ut porta nisl finibus. Vivamus eu dolor eu quam varius rutrum. Fusce nec justo id sem aliquam fringilla nec non lacus. Suspendisse eget lobortis nisi, ac cursus odio. Vivamus nibh velit, rutrum.</p>
-                                <div class="testimonial-info d-flex align-items-center">
-                                    <div class="testimonial-thumb">
-                                        <img src="img/bg-img/t1.jpg" alt="">
-                                    </div>
-                                    <p>Nazrul Islam, Developer</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
-    </section>
-    <!-- ##### Newsletter & Testimonials Area End ##### -->
+    </div>
+    <!-- ##### Song Area End ##### -->
 
     <!-- ##### Contact Area Start ##### -->
     <section class="contact-area section-padding-100 bg-img bg-overlay bg-fixed has-bg-img" style="background-image: url(img/bg-img/bg-2.jpg);">

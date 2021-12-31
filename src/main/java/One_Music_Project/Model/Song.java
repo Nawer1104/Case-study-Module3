@@ -74,4 +74,17 @@ public class Song {
     public void setCid(int cid) {
         this.cid = cid;
     }
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "sid=" + sid +
+                ", sname='" + sname + '\'' +
+                ", slink='" + slink + '\'' +
+                ", simg='" + simg + '\'' +
+                ", srepeat=" + srepeat +
+                ", aid=" + aid +
+                ", cid=" + cid +
+                '}';
+    }
 }

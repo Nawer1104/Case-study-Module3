@@ -1,6 +1,7 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
+import One_Music_Project.Model.Artist;
 import One_Music_Project.Model.Song;
 
 import javax.servlet.*;
@@ -9,8 +10,8 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "AllSongsServlet", urlPatterns = "/allSongs")
-public class AllSongsServlet extends HttpServlet {
+@WebServlet(name = "SearchArtistServlet", urlPatterns = "/searchArtist")
+public class SearchArtistServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProjectDao projectDao;
 
@@ -19,12 +20,18 @@ public class AllSongsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Song> list = projectDao.selectAllSong();
-        request.setAttribute("listSongs", list);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/allSongs.jsp");
+        request.setCharacterEncoding("UTF-8");
+        String likeName = request.getParameter("name");
+        List<Artist> artists = projectDao.searchArtistByName(likeName);
+
+        request.setAttribute("likeName", likeName);
+        request.setAttribute("listArtists", artists);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/allArtists.jsp");
         try {
             dispatcher.forward(request, response);
-        } catch (ServletException | IOException e) {
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

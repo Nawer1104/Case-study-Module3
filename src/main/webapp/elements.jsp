@@ -62,11 +62,11 @@
                             <div class="classynav">
                                 <ul>
                                     <li><a href="index.jsp">Home</a></li>
-                                    <li><a href="albums-store.jsp">Albums</a></li>
+                                    <li><a href="/allArtist">Artists</a></li>
                                     <li><a href="#">Pages</a>
                                         <ul class="dropdown">
                                             <li><a href="index.jsp">Home</a></li>
-                                            <li><a href="albums-store.jsp">Albums</a></li>
+                                            <li><a href="allArtists.jsp">Albums</a></li>
                                             <li><a href="allSongs.jsp">Events</a></li>
                                             <li><a href="blog.jsp">News</a></li>
                                             <li><a href="contact.jsp">Contact</a></li>
@@ -91,7 +91,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li><a href="allSongs.jsp">Events</a></li>
+                                    <li><a href="/allSongs">All Songs</a></li>
                                     <li><a href="blog.jsp">News</a></li>
                                     <li><a href="contact.jsp">Contact</a></li>
                                 </ul>

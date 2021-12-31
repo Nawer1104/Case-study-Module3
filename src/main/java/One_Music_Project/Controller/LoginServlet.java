@@ -9,8 +9,8 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "AllSongsServlet", urlPatterns = "/allSongs")
-public class AllSongsServlet extends HttpServlet {
+@WebServlet(name = "LoginServlet", urlPatterns = "/login")
+public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProjectDao projectDao;
 
@@ -18,7 +18,7 @@ public class AllSongsServlet extends HttpServlet {
         projectDao = new ProjectDao();
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Song> list = projectDao.selectAllSong();
         request.setAttribute("listSongs", list);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/allSongs.jsp");
