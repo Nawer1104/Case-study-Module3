@@ -155,10 +155,12 @@
                                 <div class="song-name">
                                     <p>${loop.count}. ${song.sname}</p>
                                 </div>
-                                <audio preload="auto" controls>
-                                    <source src="${song.slink}">
-                                </audio>
-                            </div>
+                                <div style="pointer-events: none">
+                                    <audio preload="auto" controls>
+                                        <source src="${song.slink}">
+                                    </audio>
+                                </div>
+                                </div>
                         </div>
                     </div>
                 </c:forEach>

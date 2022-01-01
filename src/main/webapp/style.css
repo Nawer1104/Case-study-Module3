@@ -1753,3 +1753,8 @@ img {
 .btn.btn--normal:hover {
   background-color: rgba(0, 0, 0, 0.09);
 }
+
+.disabled {
+  pointer-events: none;
+  filter: brightness(30%);
+}

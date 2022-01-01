@@ -330,9 +330,11 @@
                                 <div class="song-name">
                                     <p>${song.sid}. ${song.sname}</p>
                                 </div>
-                                <audio preload="auto" controls>
-                                    <source src="${song.slink}">
-                                </audio>
+                                <div class="${sessionScope.acc.ispremium == 0 || sessionScope.acc == null ? "disabled" : ""}">
+                                    <audio preload="auto" controls>
+                                        <source src="${song.slink}">
+                                    </audio>
+                                </div>
                             </div>
                         </div>
                     </div>
