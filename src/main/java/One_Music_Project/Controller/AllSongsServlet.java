@@ -19,7 +19,20 @@ public class AllSongsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Song> list = projectDao.selectAllSong();
+        int count = projectDao.getTotalSongNumbers();
+        String indexPage = request.getParameter("index");
+        if (indexPage == null) {
+            indexPage = "1";
+        }
+        int endPage = count / 6;
+        if (count % 6 != 0) {
+            endPage++;
+        }
+        int index = Integer.parseInt(indexPage);
+
+        List<Song> list = projectDao.pagingSongs(index);
+        request.setAttribute("pageTag", index);
+        request.setAttribute("endP", endPage);
         request.setAttribute("listSongs", list);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/allSongs.jsp");
         try {

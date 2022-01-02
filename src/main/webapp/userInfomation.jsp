@@ -94,6 +94,9 @@
                                 <li><a href="/allSongs">All Songs</a></li>
                                 <li><a href="blog.jsp">News</a></li>
                                 <li><a href="contact.jsp">Contact</a></li>
+                                <c:if test="${sessionScope.acc.isadmin == 1}">
+                                    <li><a href="/addSong">Add new Song</a></li>
+                                </c:if>
                             </ul>
 
                             <!-- Login/Register & Cart Button -->
@@ -168,7 +171,7 @@
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="message" placeholder="${user.ispremium == 1 ? "Your Plan is :One Sound Premium" : "Your Plan is :One Sound Free"}" readonly>
+                                    <input type="text" class="form-control" id="message" placeholder="${user.ispremium == 1 ? "Your Plan is : One Sound Premium" : "Your Plan is : One Sound Free"}" readonly>
                                 </div>
                             </div>
                             <div class="col-12">

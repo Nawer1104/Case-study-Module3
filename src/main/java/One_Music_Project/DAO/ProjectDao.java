@@ -24,6 +24,13 @@ public class ProjectDao {
     private static final String GET_USER = "SELECT * FROM one_music_project.useraccount where uid = ?;";
     private static final String EDIT_USER_FREE = "UPDATE `one_music_project`.`useraccount` SET `uname` = ?, `upassword` = ?, `uimg` = ? WHERE (`uid` = ?);";
     private static final String UPDATE_PREMIUM = "UPDATE `one_music_project`.`useraccount` SET `uname` = ?, `upassword` = ?, `uimg` = ?, `ispremium` = 1 WHERE (`uid` = ?);";
+    private static final String GET_TOTAL_SONG_NUMBERS = "SELECT count(*) FROM one_music_project.song;";
+    private static final String OFFSET_QUERY = "SELECT * FROM  one_music_project.song LIMIT ?, 6;";
+    private static final String DELETE_SONG_SQL = "DELETE FROM one_music_project.song WHERE sid = ?;";
+    private static final String GET_SONG_BY_SID = "SELECT * from one_music_project.song where sid =?";
+    private static final String EDIT_SONG_BY_SID = "UPDATE `one_music_project`.`song` SET `sname` = ?, `slink` = ?, `simg` = ?, `aid` = ? WHERE (`sid` = ?);";
+    private static final String ADD_NEW_SONG = "INSERT INTO `one_music_project`.`song` (`sname`, `slink`, `simg`, `aid`) VALUES (?, ?, ?, ?);";
+
 
     public ProjectDao() {
     }
@@ -240,6 +247,99 @@ public class ProjectDao {
             preparedStatement.setString(2, pass);
             preparedStatement.setString(3, image);
             preparedStatement.setString(4, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public int getTotalSongNumbers() {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( GET_TOTAL_SONG_NUMBERS );) {
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return 0;
+    }
+
+    public List<Song> pagingSongs(int index) {
+        List<Song> songList = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( OFFSET_QUERY );) {
+            preparedStatement.setInt(1, (index - 1)*6);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("sid");
+                String name = rs.getString("sname");
+                String link = rs.getString("slink");
+                String img = rs.getString("simg");
+                int repeat = rs.getInt("srepeat");
+                int aid = rs.getInt("aid");
+                int cid = rs.getInt("cid");
+                songList.add(new Song(id, name, link, img, repeat, aid, cid));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return songList;
+    }
+
+    public void deleteSong(String id) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( DELETE_SONG_SQL );) {
+            preparedStatement.setString(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public Song getSongBySid(String tid) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( GET_SONG_BY_SID );) {
+            preparedStatement.setString(1, tid);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("sid");
+                String name = rs.getString("sname");
+                String link = rs.getString("slink");
+                String img = rs.getString("simg");
+                int repeat = rs.getInt("srepeat");
+                int aid = rs.getInt("aid");
+                int cid = rs.getInt("cid");
+                return (new Song(id, name, link, img, repeat, aid, cid));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return null;
+    }
+
+    public void editSong(String name, String link, String img, String aid, String sid) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( EDIT_SONG_BY_SID );) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, link);
+            preparedStatement.setString(3, img);
+            preparedStatement.setString(4, aid);
+            preparedStatement.setString(5, sid);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public void addSong(String name, String link, String img, String aid) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( ADD_NEW_SONG );) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, link);
+            preparedStatement.setString(3, img);
+            preparedStatement.setString(4, aid);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             printSQLException(e);

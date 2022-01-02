@@ -10,8 +10,8 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "AllArtistsServlet", urlPatterns = "/allArtist")
-public class AllArtistsServlet extends HttpServlet {
+@WebServlet(name = "ShowEditFormServlet", urlPatterns = "/edit")
+public class ShowEditFormServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProjectDao projectDao;
 
@@ -20,9 +20,13 @@ public class AllArtistsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String sid = request.getParameter("sid");
         List<Artist> artists = projectDao.selectAllArtists();
+        Song song = projectDao.getSongBySid(sid);
+
         request.setAttribute("listArtists", artists);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/allArtists.jsp");
+        request.setAttribute("song", song);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/editingSong.jsp");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException | IOException e) {

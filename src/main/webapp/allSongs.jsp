@@ -94,6 +94,9 @@
                                     <li><a href="/allSongs">All Songs</a></li>
                                     <li><a href="blog.jsp">News</a></li>
                                     <li><a href="contact.jsp">Contact</a></li>
+                                    <c:if test="${sessionScope.acc.isadmin == 1}">
+                                        <li><a href="/addSong">Add new Song</a></li>
+                                    </c:if>
                                 </ul>
 
                                 <!-- Login/Register & Cart Button -->
@@ -155,45 +158,39 @@
                                 <div class="song-name">
                                     <p>${loop.count}. ${song.sname}</p>
                                 </div>
-                                <div style="pointer-events: none">
+                                <div class="${sessionScope.acc.ispremium == 0 || sessionScope.acc == null ? "disabled" : ""}">
                                     <audio preload="auto" controls>
                                         <source src="${song.slink}">
                                     </audio>
                                 </div>
+                            </div>
+                            <c:if test="${sessionScope.acc.isadmin == 1}">
+                            <div class="contact-content" style="margin-top: 10px;">
+                                <div class="contact-social-info">
+                                    <a href="/edit?sid=${song.sid}" data-toggle="tooltip" data-placement="top" title="Edit">
+                                        <i class="fa fa-edit" aria-hidden="true"></i>
+                                    </a>
+                                    <a href="/delete?sid=${song.sid}" data-toggle="tooltip" data-placement="top" title="Delete" onclick="return confirm('Are you sure?')">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
                                 </div>
+                            </div>
+                            </c:if>
                         </div>
                     </div>
                 </c:forEach>
-
-
-<%--                <!-- Single Event Area -->--%>
-<%--                <div class="col-12 col-md-6 col-lg-4">--%>
-<%--                    <div class="single-event-area mb-30">--%>
-<%--                        <div class="event-thumbnail">--%>
-<%--                            <img src="img/bg-img/e1.jpg" alt="">--%>
-<%--                        </div>--%>
-<%--                        <div class="event-text">--%>
-<%--                            <h4>Dj Night Party</h4>--%>
-<%--                            <div class="event-meta-data">--%>
-<%--                                <a href="#" class="event-place">VIP Sala</a>--%>
-<%--                                <a href="#" class="event-date">June 15, 2018</a>--%>
-<%--                            </div>--%>
-<%--                            <a href="#" class="btn see-more-btn">See Event</a>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-
-
-
             </div>
+            <div class="oneMusic-pagination-area wow fadeInUp" data-wow-delay="300ms">
+                <nav>
+                    <ul class="pagination">
+                        <c:forEach begin="1" end="${endP}" var="i">
 
-<%--            <div class="row">--%>
-<%--                <div class="col-12">--%>
-<%--                    <div class="load-more-btn text-center mt-70">--%>
-<%--                        <a href="#" class="btn oneMusic-btn">Load More <i class="fa fa-angle-double-right"></i></a>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
+                            <li class="page-item ${pageTag == i?"active":""}"><a class="page-link" href="/allSongs?index=${i}">${i}</a></li>
+
+                        </c:forEach>
+                    </ul>
+                </nav>
+            </div>
         </div>
     </section>
     <!-- ##### Events Area End ##### -->

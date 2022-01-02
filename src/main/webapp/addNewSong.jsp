@@ -12,7 +12,7 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
-    <title>One Music - Registration</title>
+    <title>One Music - Adding Song</title>
 
     <!-- Favicon -->
     <link rel="icon" href="img/core-img/favicon.ico">
@@ -124,6 +124,7 @@
                                     </div>
                                 </c:if>
                             </div>
+
                         </div>
                         <!-- Nav End -->
 
@@ -136,52 +137,80 @@
 <!-- ##### Header Area End ##### -->
 
 <!-- ##### Breadcumb Area Start ##### -->
-<section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
+<section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb.jpg);">
     <div class="bradcumbContent">
-        <p>Sign up for free to start listening.</p>
-        <h2>SIGN UP</h2>
+        <p>let's create awesome experiences</p>
+        <h2>Add New Song</h2>
     </div>
 </section>
 <!-- ##### Breadcumb Area End ##### -->
 
-<!-- ##### Login Area Start ##### -->
-<section class="login-area section-padding-100">
+<!-- ##### Contact Area Start ##### -->
+<section class="contact-area section-padding-100-0">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-8">
-                <div class="login-content">
-                    <h3>Welcome To ONE SOUND</h3>
-                    <!-- Login Form -->
-                    <div class="login-form">
-                        <form action="/signup" method="post">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">What's your email?</label>
-                                <input name="userAccount" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter E-mail.">
-                                <small id="emailHelp" class="form-text text-muted"><i class="fa fa-lock mr-2"></i>We'll never share your email with anyone else.</small>
+        <div class="row">
+
+            <div class="col-12">
+                <div class="contact-form-area">
+                    <form action="/addSongServlet" method="post">
+                        <div class="row">
+                            <p style="color: #ef2222">${messError}</p>
+                            <p style="color: #94ee4a">${messSuccess}</p>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <input type="text" name="songName"  class="form-control" placeholder="Enter song's name:">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Create a password</label>
-                                <input name="userPassword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Create a password.">
+
+                            <div class="col-12">
+                                <div class="_1aIEbS">
+                                    <div class="X1SONv">
+                                        <div class="_1FzaUZ">
+                                            <img class="TgSfgo" src="/img/core-img/defaulpicforsong.jpg">
+                                        </div>
+                                        <input type="file" name="songImg" id="imageUpload" class="_2xS5eV" accept="image/*"/>
+                                        <label for="imageUpload" class="btn btn--normal">Song : avatar</label>
+                                        <input type="file" name="songLink" id="linkUpload" class="_2xS5eV" accept="audio/*"/>
+                                        <label for="linkUpload" class="btn btn--normal">Song : link</label>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword2">Confirm your password</label>
-                                <input name="userPasswordConfirm" type="password" class="form-control" id="exampleInputPassword2" placeholder="Confirm your password.">
+
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <select class="form-control" name="songOfArtist" style="padding: 0">
+                                        <c:forEach items="${listArtists}" var="artist">
+                                            <option <c:if test="${song.aid == artist.aid}">selected="selected</c:if> value="${artist.aid}">${artist.aname}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInput">What should we call you?</label>
-                                <input name="userName" type="text" class="form-control" id="exampleInput" placeholder="Enter a profile name.">
-                                <p style="color: #ee2525">${mess}</p>
-                                <p style="color: #11dc4b">${messSuccess}</p>
+
+                            <div class="col-12 text-center">
+                                <button class="btn oneMusic-btn mt-30" type="submit">Confirm<i class="fa fa-angle-double-right"></i></button>
                             </div>
-                            <button type="submit" class="btn oneMusic-btn mt-30">Sign Up</button>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- ##### Contact Area End ##### -->
+
+<!-- ##### Contact Area Start ##### -->
+<section class="contact-area section-padding-0-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading">
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- ##### Login Area End ##### -->
+<!-- ##### Contact Area End ##### -->
 
 <!-- ##### Footer Area Start ##### -->
 <footer class="footer-area">
@@ -189,10 +218,9 @@
         <div class="row d-flex flex-wrap align-items-center">
             <div class="col-12 col-md-6">
                 <a href="#"><img src="img/core-img/logo.png" alt=""></a>
-                <p class="copywrite-text"><a href="#">
+                <p class="copywrite-text"><a href="#"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                </a>
-                </p>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></a></p>
             </div>
 
             <div class="col-12 col-md-6">

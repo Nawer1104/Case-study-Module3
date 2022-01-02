@@ -94,6 +94,9 @@
                                     <li><a href="/allSongs">All Songs</a></li>
                                     <li><a href="blog.jsp">News</a></li>
                                     <li><a href="contact.jsp">Account Overview</a></li>
+                                    <c:if test="${sessionScope.acc.isadmin == 1}">
+                                        <li><a href="/addSong">Add new Song</a></li>
+                                    </c:if>
                                 </ul>
 
                                 <!-- Login/Register & Cart Button -->
@@ -212,94 +215,6 @@
             </div>
         </div>
     </section>
-    <!-- ##### Album Catagory Area End ##### -->
-
-    <!-- ##### Buy Now Area Start ##### -->
-<%--    <div class="oneMusic-buy-now-area mb-100">--%>
-<%--        <div class="container">--%>
-<%--            <div class="row">--%>
-
-<%--                <!-- Single Album Area -->--%>
-<%--                <div class="col-12 col-sm-6 col-md-3">--%>
-<%--                    <div class="single-album-area">--%>
-<%--                        <div class="album-thumb">--%>
-<%--                            <img src="img/bg-img/b1.jpg" alt="">--%>
-<%--                            <!-- Album Price -->--%>
-<%--                            <div class="album-price">--%>
-<%--                                <p>$0.90</p>--%>
-<%--                            </div>--%>
-<%--                            <!-- Play Icon -->--%>
-<%--                            <div class="play-icon">--%>
-<%--                                <a href="#" class="video--play--btn"><span class="icon-play-button"></span></a>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                        <div class="album-info">--%>
-<%--                            <a href="#">--%>
-<%--                                <h5>Garage Band</h5>--%>
-<%--                            </a>--%>
-<%--                            <p>Radio Station</p>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-
-<%--                <!-- Single Album Area -->--%>
-<%--                <div class="col-12 col-sm-6 col-md-3">--%>
-<%--                    <div class="single-album-area">--%>
-<%--                        <div class="album-thumb">--%>
-<%--                            <img src="img/bg-img/b2.jpg" alt="">--%>
-<%--                        </div>--%>
-<%--                        <div class="album-info">--%>
-<%--                            <a href="#">--%>
-<%--                                <h5>Noises</h5>--%>
-<%--                            </a>--%>
-<%--                            <p>Buble Gum</p>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-
-<%--                <!-- Single Album Area -->--%>
-<%--                <div class="col-12 col-sm-6 col-md-3">--%>
-<%--                    <div class="single-album-area">--%>
-<%--                        <div class="album-thumb">--%>
-<%--                            <img src="img/bg-img/b3.jpg" alt="">--%>
-<%--                        </div>--%>
-<%--                        <div class="album-info">--%>
-<%--                            <a href="#">--%>
-<%--                                <h5>Jess Parker</h5>--%>
-<%--                            </a>--%>
-<%--                            <p>The Album</p>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-
-<%--                <!-- Single Album Area -->--%>
-<%--                <div class="col-12 col-sm-6 col-md-3">--%>
-<%--                    <div class="single-album-area">--%>
-<%--                        <div class="album-thumb">--%>
-<%--                            <img src="img/bg-img/b4.jpg" alt="">--%>
-<%--                        </div>--%>
-<%--                        <div class="album-info">--%>
-<%--                            <a href="#">--%>
-<%--                                <h5>Noises</h5>--%>
-<%--                            </a>--%>
-<%--                            <p>Buble Gum</p>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-
-<%--            </div>--%>
-
-<%--            <div class="row">--%>
-<%--                <div class="col-12">--%>
-<%--                    <div class="load-more-btn text-center">--%>
-<%--                        <a href="#" class="btn oneMusic-btn">Load More <i class="fa fa-angle-double-right"></i></a>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-    <!-- ##### Buy Now Area End ##### -->
-
     <!-- ##### Add Area Start ##### -->
     <div class="add-area mb-100">
         <div class="container">
@@ -320,7 +235,7 @@
             <div class="row">
 
                 <!-- Single Song Area -->
-                <c:forEach items='${requestScope["listSongs"]}' var="song">
+                <c:forEach items='${requestScope["listSongs"]}' var="song" begin="0" varStatus="loop">
                     <div class="col-12">
                         <div class="single-song-area mb-30 d-flex flex-wrap align-items-end">
                             <div class="song-thumbnail">
@@ -328,7 +243,7 @@
                             </div>
                             <div class="song-play-area">
                                 <div class="song-name">
-                                    <p>${song.sid}. ${song.sname}</p>
+                                    <p>${loop.count}. ${song.sname}</p>
                                 </div>
                                 <div class="${sessionScope.acc.ispremium == 0 || sessionScope.acc == null ? "disabled" : ""}">
                                     <audio preload="auto" controls>

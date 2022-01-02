@@ -94,6 +94,9 @@
                                     <li><a href="/allSongs">All Song</a></li>
                                     <li><a href="blog.jsp">News</a></li>
                                     <li><a href="contact.jsp">Contact</a></li>
+                                    <c:if test="${sessionScope.acc.isadmin == 1}">
+                                        <li><a href="/addSong">Add new Song</a></li>
+                                    </c:if>
                                 </ul>
 
                                 <!-- Login/Register & Cart Button -->
