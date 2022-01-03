@@ -43,7 +43,7 @@
                     <nav class="classy-navbar justify-content-between" id="oneMusicNav">
 
                         <!-- Nav brand -->
-                        <a href="index.jsp" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
+                        <a href="/loadData" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
 
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -61,36 +61,18 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li><a href="index.jsp">Home</a></li>
+                                    <li><a href="/loadData">Home</a></li>
                                     <li><a href="/allArtist">Artists</a></li>
-                                    <li><a href="#">Pages</a>
-                                        <ul class="dropdown">
-                                            <li><a href="index.jsp">Home</a></li>
-                                            <li><a href="allArtists.jsp">Albums</a></li>
-                                            <li><a href="allSongs.jsp">Events</a></li>
-                                            <li><a href="blog.jsp">News</a></li>
-                                            <li><a href="contact.jsp">Contact</a></li>
-                                            <li><a href="elements.jsp">Elements</a></li>
-                                            <li><a href="login.jsp">Login</a></li>
-                                            <li><a href="#">Dropdown</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="#">Even Dropdown</a></li>
-                                                    <li><a href="#">Even Dropdown</a></li>
-                                                    <li><a href="#">Even Dropdown</a></li>
-                                                    <li><a href="#">Even Dropdown</a>
-                                                        <ul class="dropdown">
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li><a href="#">Even Dropdown</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                    <c:if test="${sessionScope.acc != null}">
+                                        <li><a href="#">Your Playlists</a>
+                                            <ul class="dropdown">
+                                                <li><a href="/createPlaylistView">Create Playlist</a></li>
+                                                <c:forEach items='${requestScope["playList"]}' var="i">
+                                                    <li><a href="/userPlayListView?pid=${i.pid}">${i.pname}</a></li>
+                                                </c:forEach>
+                                            </ul>
+                                        </li>
+                                    </c:if>
                                     <li><a href="/allSongs">All Songs</a></li>
                                     <li><a href="blog.jsp">News</a></li>
                                     <li><a href="contact.jsp">Contact</a></li>
@@ -145,12 +127,28 @@
     <!-- ##### Breadcumb Area End ##### -->
 
     <!-- ##### Events Area Start ##### -->
-    <section class="events-area section-padding-100">
+    <section class="events-area section-padding-100" style="padding-top: 50px;">
         <div class="container">
             <div class="row">
+                <div class="col-12">
+                    <div class="contact-form-area">
+                        <form action="/allSongs" method="get">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <input value="${likeName}" name="txt" type="text" class="form-control" placeholder="Search here">
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <button class="btn oneMusic-btn" type="submit" style="margin-bottom: 15px">Search <i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <p style="color: #ee2525">${messError}</p>
+                    <p style="color: #6fe334">${messSuccess}</p>
                 <c:forEach items='${requestScope["listSongs"]}' var="song" begin="0" varStatus="loop">
-                    <div class="col-12">
-                        <div class="single-song-area mb-30 d-flex flex-wrap align-items-end">
+                        <div class="single-song-area mb-30 d-flex flex-wrap align-items-end" style="z-index: ${6 - loop.count}">
                             <div class="song-thumbnail">
                                 <img src="${song.simg}" alt="">
                             </div>
@@ -164,28 +162,44 @@
                                     </audio>
                                 </div>
                             </div>
-                            <c:if test="${sessionScope.acc.isadmin == 1}">
+
                             <div class="contact-content" style="margin-top: 10px;">
-                                <div class="contact-social-info">
+                                <div class="contact-social-info" style="display:flex;align-items: center;">
+                                    <c:if test="${sessionScope.acc.isadmin == 1}">
                                     <a href="/edit?sid=${song.sid}" data-toggle="tooltip" data-placement="top" title="Edit">
                                         <i class="fa fa-edit" aria-hidden="true"></i>
                                     </a>
                                     <a href="/delete?sid=${song.sid}" data-toggle="tooltip" data-placement="top" title="Delete" onclick="return confirm('Are you sure?')">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                     </a>
+                                    </c:if>
+                                    <c:if test="${sessionScope.acc != null}">
+                                        <span href="#" data-toggle="tooltip" data-placement="top" title="Add to playlist">
+                                            <li class="header__navbar-item header__navbar-user">
+                                                <i  class="fa fa-plus" aria-hidden="true"></i>
+                                                <ul class="header__navbar-user-menu">
+                                                    <c:forEach items='${requestScope["playList"]}' var="i">
+                                                        <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                                        <a href="/userPlayListManagement?action=add&sid=${song.sid}&pid=${i.pid}">${i.pname}</a>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </li>
+                                        </span>
+                                    </c:if>
                                 </div>
                             </div>
-                            </c:if>
+
                         </div>
-                    </div>
                 </c:forEach>
+            </div>
             </div>
             <div class="oneMusic-pagination-area wow fadeInUp" data-wow-delay="300ms">
                 <nav>
-                    <ul class="pagination">
+                    <ul class="pagination" style="margin-top: 70px">
                         <c:forEach begin="1" end="${endP}" var="i">
 
-                            <li class="page-item ${pageTag == i?"active":""}"><a class="page-link" href="/allSongs?index=${i}">${i}</a></li>
+                            <li class="page-item ${pageTag == i?"active":""}"><a class="page-link" href="/allSongs?index=${i}&txt=${likeName}">${i}</a></li>
 
                         </c:forEach>
                     </ul>
@@ -198,7 +212,7 @@
     <!-- ##### Newsletter & Testimonials Area Start ##### -->
     <section class="newsletter-testimonials-area">
         <div class="container">
-            <div class="row">
+            <div class="row">-
 
                 <!-- Newsletter Area -->
                 <div class="col-12 col-lg-6">

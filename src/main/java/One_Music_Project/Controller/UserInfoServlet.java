@@ -1,6 +1,7 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
+import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.Song;
 import One_Music_Project.Model.UserAccount;
 
@@ -28,6 +29,13 @@ public class UserInfoServlet extends HttpServlet {
         UserAccount userAccount = projectDao.getUserAccount(userId);
 
         request.setAttribute("user", userAccount);
+        HttpSession session = request.getSession();
+        UserAccount user = (UserAccount) session.getAttribute("acc");
+        if (user != null) {
+            int userID = user.getUid();
+            List<PlayList> playListList = projectDao.getPlayListNameByUserId(userID);
+            request.setAttribute("playList", playListList);
+        }
         RequestDispatcher dispatcher = request.getRequestDispatcher("userInfomation.jsp");
         try {
             dispatcher.forward(request, response);

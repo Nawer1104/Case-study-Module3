@@ -43,7 +43,7 @@
                     <nav class="classy-navbar justify-content-between" id="oneMusicNav">
 
                         <!-- Nav brand -->
-                        <a href="index.jsp" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
+                        <a href="/loadData" class="nav-brand"><img src="img/core-img/logo.png" alt=""></a>
 
                         <!-- Navbar Toggler -->
                         <div class="classy-navbar-toggler">
@@ -61,36 +61,18 @@
                             <!-- Nav Start -->
                             <div class="classynav">
                                 <ul>
-                                    <li><a href="index.jsp">Home</a></li>
+                                    <li><a href="/loadData">Home</a></li>
                                     <li><a href="/allArtist">Artists</a></li>
-                                    <li><a href="#">Pages</a>
-                                        <ul class="dropdown">
-                                            <li><a href="index.jsp">Home</a></li>
-                                            <li><a href="allArtists.jsp">Albums</a></li>
-                                            <li><a href="allSongs.jsp">Events</a></li>
-                                            <li><a href="blog.jsp">News</a></li>
-                                            <li><a href="contact.jsp">Contact</a></li>
-                                            <li><a href="elements.jsp">Elements</a></li>
-                                            <li><a href="login.jsp">Login</a></li>
-                                            <li><a href="#">Dropdown</a>
-                                                <ul class="dropdown">
-                                                    <li><a href="#">Even Dropdown</a></li>
-                                                    <li><a href="#">Even Dropdown</a></li>
-                                                    <li><a href="#">Even Dropdown</a></li>
-                                                    <li><a href="#">Even Dropdown</a>
-                                                        <ul class="dropdown">
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                            <li><a href="#">Deeply Dropdown</a></li>
-                                                        </ul>
-                                                    </li>
-                                                    <li><a href="#">Even Dropdown</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
+                                    <c:if test="${sessionScope.acc != null}">
+                                        <li><a href="#">Your Playlists</a>
+                                            <ul class="dropdown">
+                                                <li><a href="/createPlaylistView">Create Playlist</a></li>
+                                                <c:forEach items='${requestScope["playList"]}' var="i">
+                                                    <li><a href="/userPlayListView?pid=${i.pid}">${i.pname}</a></li>
+                                                </c:forEach>
+                                            </ul>
+                                        </li>
+                                    </c:if>
                                     <li><a href="/allSongs">All Songs</a></li>
                                     <li><a href="blog.jsp">News</a></li>
                                     <li><a href="contact.jsp">Contact</a></li>
@@ -1255,7 +1237,7 @@
                     <a href="#"><img src="img/core-img/logo.png" alt=""></a>
                     <p class="copywrite-text"><a href="#"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></a></p>
                 </div>
 
                 <div class="col-12 col-md-6">

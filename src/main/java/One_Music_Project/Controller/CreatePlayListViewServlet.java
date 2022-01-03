@@ -1,19 +1,21 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
-import One_Music_Project.Model.Artist;
 import One_Music_Project.Model.PlayList;
-import One_Music_Project.Model.Song;
 import One_Music_Project.Model.UserAccount;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "AllSongOfArtistServlet", urlPatterns = "/songOfArtist")
-public class AllSongOfArtistServlet extends HttpServlet {
+@WebServlet(name = "CreatePlayListViewServlet", urlPatterns = "/createPlaylistView")
+public class CreatePlayListViewServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProjectDao projectDao;
 
@@ -22,13 +24,6 @@ public class AllSongOfArtistServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        String aId = request.getParameter("aid");
-        List<Song> list = projectDao.songByAid(aId);
-        Artist artist = projectDao.getArtistById(aId);
-
-        request.setAttribute("listSongs", list);
-        request.setAttribute("Artist", artist);
         HttpSession session = request.getSession();
         UserAccount user = (UserAccount) session.getAttribute("acc");
         if (user != null) {
@@ -36,7 +31,7 @@ public class AllSongOfArtistServlet extends HttpServlet {
             List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
             request.setAttribute("playList", playListList);
         }
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/allArtists.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("createPlaylist.jsp");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException e) {

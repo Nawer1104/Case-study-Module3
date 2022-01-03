@@ -2,7 +2,9 @@ package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
 import One_Music_Project.Model.Artist;
+import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.Song;
+import One_Music_Project.Model.UserAccount;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -47,7 +49,13 @@ public class EditSongServlet extends HttpServlet {
         projectDao.editSong(name, link, img, aid, id);
         Song editedSong = projectDao.getSongBySid(id);
         List<Artist> artists = projectDao.selectAllArtists();
-
+        HttpSession session = request.getSession();
+        UserAccount user = (UserAccount) session.getAttribute("acc");
+        if (user != null) {
+            int userId = user.getUid();
+            List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
+            request.setAttribute("playList", playListList);
+        }
         request.setAttribute("messSuccess", "Edited Song Successfully");
         request.setAttribute("song", editedSong);
         request.setAttribute("listArtists", artists);

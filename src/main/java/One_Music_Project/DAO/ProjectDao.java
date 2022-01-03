@@ -1,6 +1,7 @@
 package One_Music_Project.DAO;
 
 import One_Music_Project.Model.Artist;
+import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.Song;
 import One_Music_Project.Model.UserAccount;
 
@@ -30,6 +31,18 @@ public class ProjectDao {
     private static final String GET_SONG_BY_SID = "SELECT * from one_music_project.song where sid =?";
     private static final String EDIT_SONG_BY_SID = "UPDATE `one_music_project`.`song` SET `sname` = ?, `slink` = ?, `simg` = ?, `aid` = ? WHERE (`sid` = ?);";
     private static final String ADD_NEW_SONG = "INSERT INTO `one_music_project`.`song` (`sname`, `slink`, `simg`, `aid`) VALUES (?, ?, ?, ?);";
+    private static final String TOTAL_SONG_NUMBERS_HAVING_LETTER = "SELECT count(*) FROM  one_music_project.song where sname like ?;";
+    private static final String GET_ALL_SONG_HAVING_LETTER = "SELECT * FROM  one_music_project.song where sname like ? LIMIT ?,6;";
+    private static final String CREATE_PLAY_LIST = "INSERT INTO `one_music_project`.`playlist` (`pname`, `uid`) VALUES (?, ?);";
+    private static final String GET_PLAY_LIST_BY_USER_ID = "SELECT * FROM one_music_project.playlist where uid = ?;";
+    private static final String GET_SONG_OF_PLAY_LIST = "SELECT song.sid, song.sname, song.slink, song.simg, song.srepeat, song.aid, song.cid FROM song \n" +
+            "join playlistsong on song.sid = playlistsong.sid\n" +
+            "join playlist on playlistsong.pid = playlist.pid\n" +
+            "where playlist.pid = ?;";
+    private static final String GET_PLAY_LIST_NAME_BY_PID = "SELECT playlist.pname from playlist where playlist.pid = ?;";
+    private static final String REMOVE_SONG_FROM_PLAYLIST = "DELETE FROM `one_music_project`.`playlistsong` WHERE playlistsong.sid = ? and playlistsong.pid = ?;";
+    private static final String ADD_SONG_TO_PLAY_LIST = "INSERT INTO `one_music_project`.`playlistsong` (`pid`, `sid`) VALUES (?, ?);";
+    private static final String GET_SID_FROM_PLAY_LIST_SONG = "select playlistsong.sid from playlistsong where playlistsong.pid = ?;";
 
 
     public ProjectDao() {
@@ -51,6 +64,28 @@ public class ProjectDao {
         List<Song> list = new ArrayList<>();
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement( SELECT_ALL_SONG );) {
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("sid");
+                String name = rs.getString("sname");
+                String link = rs.getString("slink");
+                String img = rs.getString("simg");
+                int repeat = rs.getInt("srepeat");
+                int aid = rs.getInt("aid");
+                int cid = rs.getInt("cid");
+                list.add(new Song(id, name, link, img, repeat, aid, cid));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return list;
+    }
+
+    public List<Song> getAllSongOfPlayList(String pid) {
+        List<Song> list = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( GET_SONG_OF_PLAY_LIST );) {
+            preparedStatement.setString(1, pid);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("sid");
@@ -98,6 +133,24 @@ public class ProjectDao {
                 String name = rs.getString("aname");
                 String img = rs.getString("apic");
                 list.add(new Artist(id, description, name, img));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return list;
+    }
+
+    public List<PlayList> getPlayListNameByUserId(int userId) {
+        List<PlayList> list = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( GET_PLAY_LIST_BY_USER_ID );) {
+            preparedStatement.setInt(1, userId);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int pid = rs.getInt("pid");
+                String pname = rs.getString("pname");
+                int uid = rs.getInt("uid");
+                list.add(new PlayList(pid, uid, pname));
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -204,6 +257,18 @@ public class ProjectDao {
         }
     }
 
+    public void createNewPlaylist(String uid, String playListName) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( CREATE_PLAY_LIST );) {
+            preparedStatement.setString(1, playListName);
+            preparedStatement.setString(2, uid);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+
     public UserAccount getUserAccount(String uid) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement( GET_USER );) {
@@ -266,6 +331,48 @@ public class ProjectDao {
         return 0;
     }
 
+    public int getSidFromPlayListSong(String sid) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( GET_SID_FROM_PLAY_LIST_SONG );) {
+            preparedStatement.setString(1, sid);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return 0;
+    }
+
+    public String getPlayListNameByPid(String pid) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( GET_PLAY_LIST_NAME_BY_PID );) {
+            preparedStatement.setString(1, pid);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return null;
+    }
+
+    public int getTotalSongNumbersHavingLetter(String txt) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( TOTAL_SONG_NUMBERS_HAVING_LETTER );) {
+            preparedStatement.setString(1, "%" + txt + "%");
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return 0;
+    }
+
     public List<Song> pagingSongs(int index) {
         List<Song> songList = new ArrayList<>();
         try (Connection connection = getConnection();
@@ -288,10 +395,55 @@ public class ProjectDao {
         return songList;
     }
 
+    public List<Song> pagingSongsWithSearch(String txt, int index) {
+        List<Song> songList = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( GET_ALL_SONG_HAVING_LETTER );) {
+            preparedStatement.setString(1, "%" + txt + "%");
+            preparedStatement.setInt(2, (index - 1)*6);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("sid");
+                String name = rs.getString("sname");
+                String link = rs.getString("slink");
+                String img = rs.getString("simg");
+                int repeat = rs.getInt("srepeat");
+                int aid = rs.getInt("aid");
+                int cid = rs.getInt("cid");
+                songList.add(new Song(id, name, link, img, repeat, aid, cid));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return songList;
+    }
+
     public void deleteSong(String id) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement( DELETE_SONG_SQL );) {
             preparedStatement.setString(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public void removeSongFromPlayList(String sid, String pid) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( REMOVE_SONG_FROM_PLAYLIST );) {
+            preparedStatement.setString(1, sid);
+            preparedStatement.setString(2, pid);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public void addSongToPlayList(String pid, String sid) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( ADD_SONG_TO_PLAY_LIST );) {
+            preparedStatement.setString(1, pid);
+            preparedStatement.setString(2, sid);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             printSQLException(e);
@@ -349,8 +501,8 @@ public class ProjectDao {
     public static void main(String[] args) {
       //TEST HERE
         ProjectDao projectDao = new ProjectDao();
-        List<Song> list = projectDao.songByAid("9");
-        for (Song x : list) {
+        List<PlayList> list = projectDao.getPlayListNameByUserId(5);
+        for (PlayList x : list) {
             System.out.println(x);
         }
     }

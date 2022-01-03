@@ -2,7 +2,9 @@ package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
 import One_Music_Project.Model.Artist;
+import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.Song;
+import One_Music_Project.Model.UserAccount;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -23,6 +25,13 @@ public class AddNewSongFormServlet extends HttpServlet  {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Artist> artists = projectDao.selectAllArtists();
         request.setAttribute("listArtists", artists);
+        HttpSession session = request.getSession();
+        UserAccount user = (UserAccount) session.getAttribute("acc");
+        if (user != null) {
+            int userId = user.getUid();
+            List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
+            request.setAttribute("playList", playListList);
+        }
         RequestDispatcher dispatcher = request.getRequestDispatcher("/addNewSong.jsp");
         try {
             dispatcher.forward(request, response);

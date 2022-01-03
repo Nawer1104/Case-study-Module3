@@ -2,7 +2,9 @@ package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
 import One_Music_Project.Model.Artist;
+import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.Song;
+import One_Music_Project.Model.UserAccount;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -26,6 +28,13 @@ public class SearchArtistServlet extends HttpServlet {
 
         request.setAttribute("likeName", likeName);
         request.setAttribute("listArtists", artists);
+        HttpSession session = request.getSession();
+        UserAccount user = (UserAccount) session.getAttribute("acc");
+        if (user != null) {
+            int userId = user.getUid();
+            List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
+            request.setAttribute("playList", playListList);
+        }
         RequestDispatcher dispatcher = request.getRequestDispatcher("/allArtists.jsp");
         try {
             dispatcher.forward(request, response);

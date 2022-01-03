@@ -12,7 +12,7 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
-    <title>One Music - Registration</title>
+    <title>One Music - User Playlist</title>
 
     <!-- Favicon -->
     <link rel="icon" href="img/core-img/favicon.ico">
@@ -120,50 +120,126 @@
 <!-- ##### Breadcumb Area Start ##### -->
 <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
     <div class="bradcumbContent">
-        <p>Sign up for free to start listening.</p>
-        <h2>SIGN UP</h2>
+        <p>See what’s new</p>
+        <h2>${playListName}</h2>
     </div>
 </section>
 <!-- ##### Breadcumb Area End ##### -->
 
-<!-- ##### Login Area Start ##### -->
-<section class="login-area section-padding-100">
+<!-- ##### Events Area Start ##### -->
+<section class="events-area section-padding-100" style="padding-top: 50px;">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12 col-lg-8">
-                <div class="login-content">
-                    <h3>Welcome To ONE SOUND</h3>
-                    <!-- Login Form -->
-                    <div class="login-form">
-                        <form action="/signup" method="post">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">What's your email?</label>
-                                <input name="userAccount" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter E-mail.">
-                                <small id="emailHelp" class="form-text text-muted"><i class="fa fa-lock mr-2"></i>We'll never share your email with anyone else.</small>
+        <div class="row">
+            <div class="col-12">
+                <div class="contact-form-area">
+                </div>
+                <c:forEach items='${requestScope["listSongs"]}' var="song" begin="0" varStatus="loop">
+                    <div class="single-song-area mb-30 d-flex flex-wrap align-items-end">
+                        <div class="song-thumbnail">
+                            <img src="${song.simg}" alt="">
+                        </div>
+                        <div class="song-play-area">
+                            <div class="song-name">
+                                <p>${loop.count}. ${song.sname}</p>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword1">Create a password</label>
-                                <input name="userPassword" type="password" class="form-control" id="exampleInputPassword1" placeholder="Create a password.">
+                            <div class="${sessionScope.acc.ispremium == 0 || sessionScope.acc == null ? "disabled" : ""}">
+                                <audio preload="auto" controls>
+                                    <source src="${song.slink}">
+                                </audio>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInputPassword2">Confirm your password</label>
-                                <input name="userPasswordConfirm" type="password" class="form-control" id="exampleInputPassword2" placeholder="Confirm your password.">
+                        </div>
+
+                        <div class="contact-content" style="margin-top: 10px;">
+                            <div class="contact-social-info">
+                                <c:if test="${sessionScope.acc != null}">
+                                    <a href="/userPlayListManagement?action=remove&sid=${song.sid}&pid=${pid}" data-toggle="tooltip" data-placement="top" title="Remove from playlist">
+                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                                    </a>
+                                </c:if>
                             </div>
-                            <div class="form-group">
-                                <label for="exampleInput">What should we call you?</label>
-                                <input name="userName" type="text" class="form-control" id="exampleInput" placeholder="Enter a profile name.">
-                                <p style="color: #ee2525">${mess}</p>
-                                <p style="color: #11dc4b">${messSuccess}</p>
-                            </div>
-                            <button type="submit" class="btn oneMusic-btn mt-30">Sign Up</button>
-                        </form>
+                        </div>
                     </div>
+                </c:forEach>
+            </div>
+        </div>
+        <div class="oneMusic-pagination-area wow fadeInUp" data-wow-delay="300ms">
+            <nav>
+                <ul class="pagination">
+                    <c:forEach begin="1" end="${endP}" var="i">
+
+                        <li class="page-item ${pageTag == i?"active":""}"><a class="page-link" href="/allSongs?index=${i}&txt=${likeName}">${i}</a></li>
+
+                    </c:forEach>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+<!-- ##### Events Area End ##### -->
+
+<div class="add-area mb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="adds">
+                    <a href="#"><img src="img/bg-img/add3.gif" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- ##### Contact Area Start ##### -->
+<section class="contact-area section-padding-100 bg-img bg-overlay bg-fixed has-bg-img" style="background-image: url(img/bg-img/bg-2.jpg);">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-heading white">
+                    <p>See what’s new</p>
+                    <h2>Get In Touch</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <!-- Contact Form Area -->
+                <div class="contact-form-area">
+                    <form action="#" method="post">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-4">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="name" placeholder="Name">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="form-group">
+                                    <input type="email" class="form-control" id="email" placeholder="E-mail">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="subject" placeholder="Subject">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <textarea name="message" class="form-control" id="message" cols="30" rows="10" placeholder="Message"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-12 text-center">
+                                <button class="btn oneMusic-btn mt-30" type="submit">Send <i class="fa fa-angle-double-right"></i></button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- ##### Login Area End ##### -->
+<!-- ##### Contact Area End ##### -->
 
 <!-- ##### Footer Area Start ##### -->
 <footer class="footer-area">
@@ -171,10 +247,9 @@
         <div class="row d-flex flex-wrap align-items-center">
             <div class="col-12 col-md-6">
                 <a href="#"><img src="img/core-img/logo.png" alt=""></a>
-                <p class="copywrite-text"><a href="#">
+                <p class="copywrite-text"><a href="#"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                </a>
-                </p>
+                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></a></p>
             </div>
 
             <div class="col-12 col-md-6">

@@ -1,7 +1,9 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
+import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.Song;
+import One_Music_Project.Model.UserAccount;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -19,7 +21,14 @@ public class AllSongsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int count = projectDao.getTotalSongNumbers();
+        String likeName = request.getParameter("txt");
+        int count;
+        if (likeName == null || likeName.equals("")) {
+            count = projectDao.getTotalSongNumbers();
+        } else {
+            count = projectDao.getTotalSongNumbersHavingLetter(likeName);
+        }
+
         String indexPage = request.getParameter("index");
         if (indexPage == null) {
             indexPage = "1";
@@ -30,7 +39,21 @@ public class AllSongsServlet extends HttpServlet {
         }
         int index = Integer.parseInt(indexPage);
 
-        List<Song> list = projectDao.pagingSongs(index);
+        List<Song> list;
+        if (likeName == null || likeName.equals("")) {
+            list = projectDao.pagingSongs(index);
+        } else {
+            list = projectDao.pagingSongsWithSearch(likeName, index);
+        }
+        HttpSession session = request.getSession();
+        UserAccount user = (UserAccount) session.getAttribute("acc");
+        if (user != null) {
+            int userId = user.getUid();
+            List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
+            request.setAttribute("playList", playListList);
+        }
+        request.setAttribute("likeName", likeName);
+        request.setAttribute("count", count);
         request.setAttribute("pageTag", index);
         request.setAttribute("endP", endPage);
         request.setAttribute("listSongs", list);

@@ -2,6 +2,8 @@ package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
 import One_Music_Project.Model.Artist;
+import One_Music_Project.Model.PlayList;
+import One_Music_Project.Model.UserAccount;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -36,6 +38,13 @@ public class AddNewSongServlet extends HttpServlet  {
 
         if (link.equals("") || name.equals("")) {
             List<Artist> artists = projectDao.selectAllArtists();
+            HttpSession session = request.getSession();
+            UserAccount user = (UserAccount) session.getAttribute("acc");
+            if (user != null) {
+                int userId = user.getUid();
+                List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
+                request.setAttribute("playList", playListList);
+            }
             request.setAttribute("messError", "Add New Song To The Library Failed");
             request.setAttribute("listArtists", artists);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/addNewSong.jsp");

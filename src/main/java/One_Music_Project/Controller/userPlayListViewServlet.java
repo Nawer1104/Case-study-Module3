@@ -1,34 +1,34 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
-import One_Music_Project.Model.Artist;
 import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.Song;
 import One_Music_Project.Model.UserAccount;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "AllSongOfArtistServlet", urlPatterns = "/songOfArtist")
-public class AllSongOfArtistServlet extends HttpServlet {
+@WebServlet(name = "userPlayListViewServlet", urlPatterns = "/userPlayListView")
+
+public class userPlayListViewServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProjectDao projectDao;
 
     public void init() {
         projectDao = new ProjectDao();
     }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        String aId = request.getParameter("aid");
-        List<Song> list = projectDao.songByAid(aId);
-        Artist artist = projectDao.getArtistById(aId);
+        String pid = request.getParameter("pid");
 
-        request.setAttribute("listSongs", list);
-        request.setAttribute("Artist", artist);
+        List<Song> list = projectDao.getAllSongOfPlayList(pid);
+        String playListName = projectDao.getPlayListNameByPid(pid);
         HttpSession session = request.getSession();
         UserAccount user = (UserAccount) session.getAttribute("acc");
         if (user != null) {
@@ -36,7 +36,11 @@ public class AllSongOfArtistServlet extends HttpServlet {
             List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
             request.setAttribute("playList", playListList);
         }
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/allArtists.jsp");
+
+        request.setAttribute("listSongs", list);
+        request.setAttribute("pid", pid);
+        request.setAttribute("playListName", playListName);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("userPlayList.jsp");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException e) {

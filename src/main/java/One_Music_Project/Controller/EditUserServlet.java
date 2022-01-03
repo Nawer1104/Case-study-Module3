@@ -1,6 +1,7 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
+import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.Song;
 import One_Music_Project.Model.UserAccount;
 
@@ -41,8 +42,13 @@ public class EditUserServlet extends HttpServlet {
 
             UserAccount userAccountAfterChange = projectDao.getUserAccount(id);
             HttpSession session = request.getSession();
+            UserAccount user = (UserAccount) session.getAttribute("acc");
+            if (user != null) {
+                int userId = user.getUid();
+                List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
+                request.setAttribute("playList", playListList);
+            }
             session.setAttribute("acc", userAccountAfterChange);
-
             request.setAttribute("user", userAccountAfterChange);
             RequestDispatcher dispatcher = request.getRequestDispatcher("userInfomation.jsp");
             try {
@@ -57,8 +63,13 @@ public class EditUserServlet extends HttpServlet {
 
             UserAccount userAccountAfterChange = projectDao.getUserAccount(id);
             HttpSession session = request.getSession();
+            UserAccount user = (UserAccount) session.getAttribute("acc");
+            if (user != null) {
+                int userId = user.getUid();
+                List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
+                request.setAttribute("playList", playListList);
+            }
             session.setAttribute("acc", userAccountAfterChange);
-
             request.setAttribute("user", userAccountAfterChange);
             RequestDispatcher dispatcher = request.getRequestDispatcher("userInfomation.jsp");
             try {
