@@ -1,6 +1,7 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
+import One_Music_Project.Model.Category;
 import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.Song;
 import One_Music_Project.Model.UserAccount;
@@ -81,6 +82,8 @@ public class UserPlayListManagement extends HttpServlet {
             request.setAttribute("endP", endPage);
             request.setAttribute("listSongs", list);
             request.setAttribute("messSuccess", "Song added in to your play list!");
+            List<Category> categories = projectDao.selectAllCategory();
+            request.setAttribute("categories", categories);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/allSongs.jsp");
             try {
                 dispatcher.forward(request, response);
@@ -125,6 +128,8 @@ public class UserPlayListManagement extends HttpServlet {
             request.setAttribute("endP", endPage);
             request.setAttribute("listSongs", list);
             request.setAttribute("messError", "Song already in your play list!");
+            List<Category> categories = projectDao.selectAllCategory();
+            request.setAttribute("categories", categories);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/allSongs.jsp");
             try {
                 dispatcher.forward(request, response);
@@ -153,6 +158,8 @@ public class UserPlayListManagement extends HttpServlet {
         request.setAttribute("listSongs", list);
         request.setAttribute("pid", pid);
         request.setAttribute("playListName", playListName);
+        List<Category> categories = projectDao.selectAllCategory();
+        request.setAttribute("categories", categories);
         RequestDispatcher dispatcher = request.getRequestDispatcher("userPlayList.jsp");
         try {
             dispatcher.forward(request, response);

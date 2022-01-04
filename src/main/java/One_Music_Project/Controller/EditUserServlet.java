@@ -1,6 +1,7 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
+import One_Music_Project.Model.Category;
 import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.Song;
 import One_Music_Project.Model.UserAccount;
@@ -50,6 +51,8 @@ public class EditUserServlet extends HttpServlet {
             }
             session.setAttribute("acc", userAccountAfterChange);
             request.setAttribute("user", userAccountAfterChange);
+            List<Category> categories = projectDao.selectAllCategory();
+            request.setAttribute("categories", categories);
             RequestDispatcher dispatcher = request.getRequestDispatcher("userInfomation.jsp");
             try {
                 dispatcher.forward(request, response);
@@ -71,6 +74,8 @@ public class EditUserServlet extends HttpServlet {
             }
             session.setAttribute("acc", userAccountAfterChange);
             request.setAttribute("user", userAccountAfterChange);
+            List<Category> categories = projectDao.selectAllCategory();
+            request.setAttribute("categories", categories);
             RequestDispatcher dispatcher = request.getRequestDispatcher("userInfomation.jsp");
             try {
                 dispatcher.forward(request, response);

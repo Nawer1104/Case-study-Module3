@@ -1,9 +1,6 @@
 package One_Music_Project.DAO;
 
-import One_Music_Project.Model.Artist;
-import One_Music_Project.Model.PlayList;
-import One_Music_Project.Model.Song;
-import One_Music_Project.Model.UserAccount;
+import One_Music_Project.Model.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,7 +23,9 @@ public class ProjectDao {
     private static final String EDIT_USER_FREE = "UPDATE `one_music_project`.`useraccount` SET `uname` = ?, `upassword` = ?, `uimg` = ? WHERE (`uid` = ?);";
     private static final String UPDATE_PREMIUM = "UPDATE `one_music_project`.`useraccount` SET `uname` = ?, `upassword` = ?, `uimg` = ?, `ispremium` = 1 WHERE (`uid` = ?);";
     private static final String GET_TOTAL_SONG_NUMBERS = "SELECT count(*) FROM one_music_project.song;";
+    private static final String GET_TOTAL_SONG_NUMBERS_BY_CATEGORY = "SELECT count(*) FROM one_music_project.song where cid = ?;";
     private static final String OFFSET_QUERY = "SELECT * FROM  one_music_project.song LIMIT ?, 6;";
+    private static final String OFFSET_QUERY_BY_CATEGORIES = "SELECT * FROM  one_music_project.song where cid = ? LIMIT ?, 6;";
     private static final String DELETE_SONG_SQL = "DELETE FROM one_music_project.song WHERE sid = ?;";
     private static final String GET_SONG_BY_SID = "SELECT * from one_music_project.song where sid =?";
     private static final String EDIT_SONG_BY_SID = "UPDATE `one_music_project`.`song` SET `sname` = ?, `slink` = ?, `simg` = ?, `aid` = ? WHERE (`sid` = ?);";
@@ -43,6 +42,10 @@ public class ProjectDao {
     private static final String REMOVE_SONG_FROM_PLAYLIST = "DELETE FROM `one_music_project`.`playlistsong` WHERE playlistsong.sid = ? and playlistsong.pid = ?;";
     private static final String ADD_SONG_TO_PLAY_LIST = "INSERT INTO `one_music_project`.`playlistsong` (`pid`, `sid`) VALUES (?, ?);";
     private static final String GET_SID_FROM_PLAY_LIST_SONG = "select playlistsong.sid from playlistsong where playlistsong.pid = ?;";
+    private static final String ALL_CATEGORY = "SELECT * FROM one_music_project.category;";
+    private static final String SEARCH_SONG_BY_CID = "SELECT * FROM one_music_project.song where cid = ?;";
+    private static final String GET_CATEGORY_BY_CID = "SELECT * FROM one_music_project.category where cid = ?;";
+    private static final String GET_CATEGORY_NAME_BY_CID = "select cname from one_music_project.category where cid = ?;";
 
 
     public ProjectDao() {
@@ -79,6 +82,60 @@ public class ProjectDao {
             printSQLException(e);
         }
         return list;
+    }
+
+    public List<Category> selectAllCategory() {
+        List<Category> list = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( ALL_CATEGORY );) {
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("cid");
+                String name = rs.getString("cname");
+                list.add(new Category(id, name));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return list;
+    }
+
+    public List<Song> getAllSongByCategory(String categoryId) {
+        List<Song> list = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( SEARCH_SONG_BY_CID );) {
+            preparedStatement.setString(1, categoryId);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("sid");
+                String name = rs.getString("sname");
+                String link = rs.getString("slink");
+                String img = rs.getString("simg");
+                int repeat = rs.getInt("srepeat");
+                int aid = rs.getInt("aid");
+                int cid = rs.getInt("cid");
+                list.add(new Song(id, name, link, img, repeat, aid, cid));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return list;
+    }
+
+    public Category getCategoryById(String categoryId) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_CATEGORY_BY_CID);) {
+            preparedStatement.setString(1, categoryId);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("cid");
+                String name = rs.getString("cname");
+                return new Category(id, name);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public List<Song> getAllSongOfPlayList(String pid) {
@@ -331,6 +388,20 @@ public class ProjectDao {
         return 0;
     }
 
+    public int getTotalSongNumbersByCategory(String cid) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( GET_TOTAL_SONG_NUMBERS_BY_CATEGORY );) {
+            preparedStatement.setString(1, cid);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return 0;
+    }
+
     public int getSidFromPlayListSong(String sid) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement( GET_SID_FROM_PLAY_LIST_SONG );) {
@@ -349,6 +420,20 @@ public class ProjectDao {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement( GET_PLAY_LIST_NAME_BY_PID );) {
             preparedStatement.setString(1, pid);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                return rs.getString(1);
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return null;
+    }
+
+    public String getCategoryListNameByCid(String cid) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( GET_CATEGORY_NAME_BY_CID );) {
+            preparedStatement.setString(1, cid);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 return rs.getString(1);
@@ -378,6 +463,29 @@ public class ProjectDao {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement( OFFSET_QUERY );) {
             preparedStatement.setInt(1, (index - 1)*6);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("sid");
+                String name = rs.getString("sname");
+                String link = rs.getString("slink");
+                String img = rs.getString("simg");
+                int repeat = rs.getInt("srepeat");
+                int aid = rs.getInt("aid");
+                int cid = rs.getInt("cid");
+                songList.add(new Song(id, name, link, img, repeat, aid, cid));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return songList;
+    }
+
+    public List<Song> pagingSongsByCategory(String categoryId, int index) {
+        List<Song> songList = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement( OFFSET_QUERY_BY_CATEGORIES );) {
+            preparedStatement.setString(1, categoryId);
+            preparedStatement.setInt(2, (index - 1)*6);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("sid");

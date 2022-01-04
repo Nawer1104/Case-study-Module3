@@ -1,10 +1,7 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
-import One_Music_Project.Model.Artist;
-import One_Music_Project.Model.PlayList;
-import One_Music_Project.Model.Song;
-import One_Music_Project.Model.UserAccount;
+import One_Music_Project.Model.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -23,6 +20,8 @@ public class AddNewSongFormServlet extends HttpServlet  {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Category> categories = projectDao.selectAllCategory();
+        request.setAttribute("categories", categories);
         List<Artist> artists = projectDao.selectAllArtists();
         request.setAttribute("listArtists", artists);
         HttpSession session = request.getSession();

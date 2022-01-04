@@ -1,6 +1,7 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
+import One_Music_Project.Model.Category;
 import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.UserAccount;
 
@@ -31,6 +32,8 @@ public class CreatePlayListViewServlet extends HttpServlet {
             List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
             request.setAttribute("playList", playListList);
         }
+        List<Category> categories = projectDao.selectAllCategory();
+        request.setAttribute("categories", categories);
         RequestDispatcher dispatcher = request.getRequestDispatcher("createPlaylist.jsp");
         try {
             dispatcher.forward(request, response);

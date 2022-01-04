@@ -16,20 +16,32 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "userPlayListViewServlet", urlPatterns = "/userPlayListView")
-
-public class userPlayListViewServlet extends HttpServlet {
+@WebServlet(name = "songByCategory", urlPatterns = "/songByCategory")
+public class songByCategory extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private ProjectDao projectDao;
 
     public void init() {
         projectDao = new ProjectDao();
     }
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String pid = request.getParameter("pid");
 
-        List<Song> list = projectDao.getAllSongOfPlayList(pid);
-        String playListName = projectDao.getPlayListNameByPid(pid);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String cid = request.getParameter("cid");
+
+        int count = projectDao.getTotalSongNumbersByCategory(cid);
+
+        String indexPage = request.getParameter("index");
+        if (indexPage == null) {
+            indexPage = "1";
+        }
+        int endPage = count / 6;
+        if (count % 6 != 0) {
+            endPage++;
+        }
+        int index = Integer.parseInt(indexPage);
+
+        List<Song> list = projectDao.pagingSongsByCategory(cid, index);
+
         HttpSession session = request.getSession();
         UserAccount user = (UserAccount) session.getAttribute("acc");
         if (user != null) {
@@ -37,19 +49,21 @@ public class userPlayListViewServlet extends HttpServlet {
             List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
             request.setAttribute("playList", playListList);
         }
-
-        request.setAttribute("listSongs", list);
-        request.setAttribute("pid", pid);
-        request.setAttribute("playListName", playListName);
+        String categoryName = projectDao.getCategoryListNameByCid(cid);
         List<Category> categories = projectDao.selectAllCategory();
+        request.setAttribute("cid", cid);
         request.setAttribute("categories", categories);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("userPlayList.jsp");
+        request.setAttribute("CategoryName", categoryName);
+        request.setAttribute("count", count);
+        request.setAttribute("pageTag", index);
+        request.setAttribute("endP", endPage);
+        request.setAttribute("listSongs", list);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/songOfCategory.jsp");
         try {
             dispatcher.forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
     }
+
 }

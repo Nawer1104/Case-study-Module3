@@ -74,7 +74,13 @@
                                     </li>
                                 </c:if>
                                 <li><a href="/allSongs">All Songs</a></li>
-                                <li><a href="blog.jsp">News</a></li>
+                                <li><a href="#">Categories</a>
+                                    <ul class="dropdown">
+                                        <c:forEach items='${requestScope["categories"]}' var="i">
+                                            <li><a href="/songByCategory?cid=${i.cid}">${i.cname}</a></li>
+                                        </c:forEach>
+                                    </ul>
+                                </li>
                                 <li><a href="contact.jsp">Contact</a></li>
                                 <c:if test="${sessionScope.acc.isadmin == 1}">
                                     <li><a href="/addSong">Add new Song</a></li>

@@ -12,7 +12,7 @@
     <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
     <!-- Title -->
-    <title>One Music - User Playlist</title>
+    <title>One Music - All Songs By Category</title>
 
     <!-- Favicon -->
     <link rel="icon" href="img/core-img/favicon.ico">
@@ -92,7 +92,7 @@
                                 <!-- Login/Register -->
                                 <c:if test="${sessionScope.acc == null}">
                                     <div class="login-register-btn mr-50">
-                                        <a href="login.jsp" id="loginBtn">Login </a>
+                                        <a href="login.jsp" id="loginBtn">Login</a>
                                     </div>
 
                                     <div class="login-register-btn mr-50">
@@ -127,7 +127,7 @@
 <section class="breadcumb-area bg-img bg-overlay" style="background-image: url(img/bg-img/breadcumb3.jpg);">
     <div class="bradcumbContent">
         <p>See what’s new</p>
-        <h2>${playListName}</h2>
+        <h2>${CategoryName}</h2>
     </div>
 </section>
 <!-- ##### Breadcumb Area End ##### -->
@@ -137,10 +137,10 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="contact-form-area">
-                </div>
+                <p style="color: #ee2525">${messError}</p>
+                <p style="color: #6fe334">${messSuccess}</p>
                 <c:forEach items='${requestScope["listSongs"]}' var="song" begin="0" varStatus="loop">
-                    <div class="single-song-area mb-30 d-flex flex-wrap align-items-end">
+                    <div class="single-song-area mb-30 d-flex flex-wrap align-items-end" style="z-index: ${6 - loop.count}">
                         <div class="song-thumbnail">
                             <img src="${song.simg}" alt="">
                         </div>
@@ -156,24 +156,42 @@
                         </div>
 
                         <div class="contact-content" style="margin-top: 10px;">
-                            <div class="contact-social-info">
-                                <c:if test="${sessionScope.acc != null}">
-                                    <a href="/userPlayListManagement?action=remove&sid=${song.sid}&pid=${pid}" data-toggle="tooltip" data-placement="top" title="Remove from playlist">
-                                        <i class="fa fa-minus" aria-hidden="true"></i>
+                            <div class="contact-social-info" style="display:flex;align-items: center;">
+                                <c:if test="${sessionScope.acc.isadmin == 1}">
+                                    <a href="/edit?sid=${song.sid}" data-toggle="tooltip" data-placement="top" title="Edit">
+                                        <i class="fa fa-edit" aria-hidden="true"></i>
                                     </a>
+                                    <a href="/delete?sid=${song.sid}" data-toggle="tooltip" data-placement="top" title="Delete" onclick="return confirm('Are you sure?')">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+                                </c:if>
+                                <c:if test="${sessionScope.acc != null}">
+                                        <span href="#" data-toggle="tooltip" data-placement="top" title="Add to playlist">
+                                            <li class="header__navbar-item header__navbar-user">
+                                                <i  class="fa fa-plus" aria-hidden="true"></i>
+                                                <ul class="header__navbar-user-menu">
+                                                    <c:forEach items='${requestScope["playList"]}' var="i">
+                                                        <li class="header__navbar-user-item header__navbar-user-item--separate">
+                                                        <a href="/userPlayListManagement?action=add&sid=${song.sid}&pid=${i.pid}">${i.pname}</a>
+                                                        </li>
+                                                    </c:forEach>
+                                                </ul>
+                                            </li>
+                                        </span>
                                 </c:if>
                             </div>
                         </div>
+
                     </div>
                 </c:forEach>
             </div>
         </div>
         <div class="oneMusic-pagination-area wow fadeInUp" data-wow-delay="300ms">
             <nav>
-                <ul class="pagination">
+                <ul class="pagination" style="margin-top: 70px">
                     <c:forEach begin="1" end="${endP}" var="i">
 
-                        <li class="page-item ${pageTag == i?"active":""}"><a class="page-link" href="/allSongs?index=${i}&txt=${likeName}">${i}</a></li>
+                        <li class="page-item ${pageTag == i?"active":""}"><a class="page-link" href="/songByCategory?index=${i}&cid=${cid}">${i}</a></li>
 
                     </c:forEach>
                 </ul>
@@ -183,19 +201,64 @@
 </section>
 <!-- ##### Events Area End ##### -->
 
-<div class="add-area mb-100">
+<!-- ##### Newsletter & Testimonials Area Start ##### -->
+<section class="newsletter-testimonials-area">
     <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="adds">
-                    <a href="#"><img src="img/bg-img/add3.gif" alt=""></a>
+        <div class="row">-
+
+            <!-- Newsletter Area -->
+            <div class="col-12 col-lg-6">
+                <div class="newsletter-area mb-100">
+                    <div class="section-heading text-left mb-50">
+                        <p>See what’s new</p>
+                        <h2>Subscribe to newsletter</h2>
+                    </div>
+                    <div class="newsletter-form">
+                        <form action="#">
+                            <input type="search" name="search" id="newsletterSearch" placeholder="E-mail">
+                            <button type="submit" class="btn oneMusic-btn">Subscribe <i class="fa fa-angle-double-right"></i></button>
+                        </form>
+                    </div>
                 </div>
             </div>
+
+            <!-- Testimonials Area -->
+            <div class="col-12 col-lg-6">
+                <div class="testimonials-area mb-100 bg-img bg-overlay" style="background-image: url(img/bg-img/bg-3.jpg);">
+                    <div class="section-heading white text-left mb-50">
+                        <p>See what’s new</p>
+                        <h2>Testimonial</h2>
+                    </div>
+                    <!-- Testimonial Slide -->
+                    <div class="testimonials-slide owl-carousel">
+                        <!-- Single Slide -->
+                        <div class="single-slide">
+                            <p>Nam tristique ex vel magna tincidunt, ut porta nisl finibus. Vivamus eu dolor eu quam varius rutrum. Fusce nec justo id sem aliquam fringilla nec non lacus. Suspendisse eget lobortis nisi, ac cursus odio. Vivamus nibh velit, rutrum.</p>
+                            <div class="testimonial-info d-flex align-items-center">
+                                <div class="testimonial-thumb">
+                                    <img src="img/bg-img/t1.jpg" alt="">
+                                </div>
+                                <p>William Smith, Customer</p>
+                            </div>
+                        </div>
+                        <!-- Single Slide -->
+                        <div class="single-slide">
+                            <p>Nam tristique ex vel magna tincidunt, ut porta nisl finibus. Vivamus eu dolor eu quam varius rutrum. Fusce nec justo id sem aliquam fringilla nec non lacus. Suspendisse eget lobortis nisi, ac cursus odio. Vivamus nibh velit, rutrum.</p>
+                            <div class="testimonial-info d-flex align-items-center">
+                                <div class="testimonial-thumb">
+                                    <img src="img/bg-img/t1.jpg" alt="">
+                                </div>
+                                <p>Nazrul Islam, Developer</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-</div>
-
-
+</section>
+<!-- ##### Newsletter & Testimonials Area End ##### -->
 
 <!-- ##### Contact Area Start ##### -->
 <section class="contact-area section-padding-100 bg-img bg-overlay bg-fixed has-bg-img" style="background-image: url(img/bg-img/bg-2.jpg);">

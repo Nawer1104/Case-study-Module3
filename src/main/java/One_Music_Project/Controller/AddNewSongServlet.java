@@ -2,6 +2,7 @@ package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
 import One_Music_Project.Model.Artist;
+import One_Music_Project.Model.Category;
 import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.UserAccount;
 
@@ -45,6 +46,8 @@ public class AddNewSongServlet extends HttpServlet  {
                 List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
                 request.setAttribute("playList", playListList);
             }
+            List<Category> categories = projectDao.selectAllCategory();
+            request.setAttribute("categories", categories);
             request.setAttribute("messError", "Add New Song To The Library Failed");
             request.setAttribute("listArtists", artists);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/addNewSong.jsp");
@@ -57,6 +60,8 @@ public class AddNewSongServlet extends HttpServlet  {
             link = "audio/" + link;
             projectDao.addSong(name, link, img, aid);
             List<Artist> artists = projectDao.selectAllArtists();
+            List<Category> categories = projectDao.selectAllCategory();
+            request.setAttribute("categories", categories);
             request.setAttribute("messSuccess", "New Song Added To The Library");
             request.setAttribute("listArtists", artists);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/addNewSong.jsp");

@@ -1,6 +1,7 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
+import One_Music_Project.Model.Category;
 import One_Music_Project.Model.Song;
 import One_Music_Project.Model.UserAccount;
 
@@ -22,6 +23,15 @@ public class LogOutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.removeAttribute("acc");
-        response.sendRedirect("/login.jsp");
+        List<Category> categories = projectDao.selectAllCategory();
+        request.setAttribute("categories", categories);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

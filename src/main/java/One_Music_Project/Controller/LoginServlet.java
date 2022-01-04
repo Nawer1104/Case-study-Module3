@@ -1,6 +1,7 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
+import One_Music_Project.Model.Category;
 import One_Music_Project.Model.Song;
 import One_Music_Project.Model.UserAccount;
 
@@ -29,6 +30,8 @@ public class LoginServlet extends HttpServlet {
 
         if (userAccount.equals("") || userPassword.equals("")) {
             request.setAttribute("mess", "Can't be empty!");
+            List<Category> categories = projectDao.selectAllCategory();
+            request.setAttribute("categories", categories);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
             try {
                 dispatcher.forward(request, response);
@@ -36,6 +39,8 @@ public class LoginServlet extends HttpServlet {
                 e.printStackTrace();
             }
         } else if (account == null) {
+            List<Category> categories = projectDao.selectAllCategory();
+            request.setAttribute("categories", categories);
             request.setAttribute("mess", "Wrong password or email address.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
             try {

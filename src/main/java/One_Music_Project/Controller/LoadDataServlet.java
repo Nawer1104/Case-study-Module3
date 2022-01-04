@@ -1,6 +1,7 @@
 package One_Music_Project.Controller;
 
 import One_Music_Project.DAO.ProjectDao;
+import One_Music_Project.Model.Category;
 import One_Music_Project.Model.PlayList;
 import One_Music_Project.Model.UserAccount;
 
@@ -30,6 +31,8 @@ public class LoadDataServlet extends HttpServlet {
             int userId = user.getUid();
             List<PlayList> playListList = projectDao.getPlayListNameByUserId(userId);
             request.setAttribute("playList", playListList);
+            List<Category> categories = projectDao.selectAllCategory();
+            request.setAttribute("categories", categories);
             RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
             try {
                 dispatcher.forward(request, response);
@@ -39,6 +42,17 @@ public class LoadDataServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-        else response.sendRedirect("/index.jsp");
+        else {
+            List<Category> categories = projectDao.selectAllCategory();
+            request.setAttribute("categories", categories);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
+            try {
+                dispatcher.forward(request, response);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
